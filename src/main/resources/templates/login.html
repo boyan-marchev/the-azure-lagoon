@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <th:block th:include="~{fragments/head}"></th:block>
+
+</head>
+
+<body>
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/white-lagoon.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Login</h5>
+                    <form th:action="@{/users/login}" th:method="POST" th:object="${userLoginBindingModel}" class="form-signin">
+                        <div class="form-label-group">
+                            <input th:field="*{username}" type="text" id="username" class="form-control" placeholder="Username"
+                                   required>
+                            <label for="username"></label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input th:field="*{password}" type="password" id="inputPassword" class="form-control" placeholder="Password"
+                                   required>
+                            <label for="inputPassword"></label>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Login</button>
+                        <hr class="my-4">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

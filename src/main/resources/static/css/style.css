@@ -1,0 +1,113 @@
+
+.navbar-my, nav {
+    width: 100%;
+    background-color: transparent;
+
+}
+
+.navbar-my li a:hover{
+    background-color: transparent;
+}
+
+body {
+    color: white;
+    margin: 0;
+}
+
+.hotel-booking label, input {
+    display:block;
+}
+
+input{
+    box-sizing: border-box;
+}
+
+.container {
+    zoom: 1;
+    filter: alpha(opacity=50);
+    opacity: 0.75;
+}
+
+.hotel-booking {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.hotel-booking label{
+    margin: 5px 10px 5px 0;
+    color: white;
+}
+
+.hotel-booking input{
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.hotel-booking option{
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.hotel-booking button{
+    padding: 10px 20px;
+    background-color: dodgerblue;
+    border: 1px solid #ddd;
+    color: white;
+}
+
+.hotel-booking button:hover{
+    background-color: royalblue;
+}
+
+@media (max-width: 800px) {
+    .hotel-booking input {
+        margin: 10px 0;
+    }
+
+    .hotel-booking {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.form-signin {
+    background-color: transparent;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: transparent;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

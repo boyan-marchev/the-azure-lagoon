@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+
+</head>
+<body>
+
+<style>
+    body {
+        background-image: url('/img/sea-view.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+<header>
+</header>
+
+<div>
+
+</div>
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card card-signin flex-row my-5">
+                <div class="card-img-left d-none d-md-flex">
+                    <!-- Background image for card set in CSS! -->
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">Register</h5>
+                    <form th:action="@{/users/register}" th:method="POST" th:object="${userRegisterBindingModel}" class="form-signin">
+
+                        <div class="form-label-group">
+                            <input th:field="*{firstName}" type="text" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
+                            <label for="inputFirstName"></label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input th:field="*{lastName}" type="text" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
+                            <label for="inputLastName"></label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input th:field="*{username}" type="text" id="inputUserame" class="form-control" placeholder="Username" required autofocus>
+                            <label for="inputUserame"></label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input th:field="*{email}" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                            <label for="inputEmail"></label>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-label-group">
+                            <input th:field="*{password}" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <label for="inputPassword"></label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input th:field="*{confirmPassword}" type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm password" required>
+                            <label for="inputConfirmPassword"></label>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+                        <a class="d-block text-center mt-2 small" th:href="@{/users/login}">Login</a>
+                        <hr class="my-4">
+<!--                        <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign up with Google</button>-->
+<!--                        <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button>-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
