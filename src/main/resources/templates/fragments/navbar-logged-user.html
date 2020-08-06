@@ -1,28 +1,21 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
 
 
-    <div class="navbar-my">
-            <ul>
-                <li><a th:href="@{/}">Lagoon</a></li>
-                <th:block >
+    <div class="navbar-logged">
+        <ul>
+            <li><a th:href="@{/}">Lagoon</a></li>
 
-                <li><a th:href="@{/users/login}">Login</a></li>
-                <li><a th:href="@{/users/register}">Register</a></li>
+            <li><a th:href="@{/hotels/hotels-info}">Hotels</a></li>
+            <li><a th:href="@{/restaurants}">Restaurants</a></li>
+            <li><a th:href="@{/bars}">Bars</a></li>
+            <li><a th:href="@{/sport}">Sport</a></li>
+            <li><a th:href="@{/events}">Events</a></li>
+            <li><a th:href="@{/users/admin}">Admin</a></li>
+            <li><a th:href="@{/events}">Profile</a></li>
+            <li><a th:href="@{/resort}">Resort info</a></li>
+            <li><a th:href="@{/users/logout}">Logout</a></li>
 
-                </th:block>
-
-                <th:block>
-                    <li><a th:href="@{/resort}">Resort</a></li>
-                    <li><a th:href="@{/hotels/hotels-info}">Hotels</a></li>
-                    <li><a th:href="@{/restaurants}">Restaurants</a></li>
-                    <li><a th:href="@{/bars}">Bars</a></li>
-                    <li><a th:href="@{/sport}">Sport</a></li>
-                    <li><a th:href="@{/events}">Events</a></li>
-                    <li><a th:href="@{/users/logout}">Logout</a></li>
-
-                </th:block>
-
-            </ul>
+        </ul>
 
     </div>
 

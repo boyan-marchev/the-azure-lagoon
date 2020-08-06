@@ -24,6 +24,7 @@ import softuni.springadvanced.services.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -70,7 +71,7 @@ public class HotelController {
     public ModelAndView infoPost(@Valid @ModelAttribute("bookingAddBindingModel")
                                          BookingAddBindingModel bookingAddBindingModel,
                                  BindingResult bindingResult, ModelAndView modelAndView,
-                                 RedirectAttributes redirectAttributes, HttpSession httpSession) {
+                                 RedirectAttributes redirectAttributes, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("bookingAddBindingModel", bookingAddBindingModel);
@@ -83,20 +84,21 @@ public class HotelController {
 
             BookingServiceModel bookingServiceModel = this.modelMapper.map(bookingAddBindingModel, BookingServiceModel.class);
 
-            if (bookingServiceModel.getStartDate().isEqual(bookingServiceModel.getEndDate())
-            || bookingServiceModel.getStartDate().isAfter(bookingServiceModel.getEndDate())){
+            if (bookingServiceModel.getEndDate() != null) {
+                if (bookingServiceModel.getStartDate().isEqual(bookingServiceModel.getEndDate())
+                        || bookingServiceModel.getStartDate().isAfter(bookingServiceModel.getEndDate())) {
 
-                modelAndView.setViewName("redirect:hotels-info");
+                    modelAndView.setViewName("redirect:hotels-info");
 
+                }
             }
 
             String bookingName = bookingAddBindingModel.getUserLastName() + "-" + bookingAddBindingModel.getFacilityName();
 
-            String username = String.valueOf(httpSession.getAttribute("username"));
+            String username = principal.getName();
 
-            UserServiceModel user = this.userService.getUserServiceModelByLastname(bookingAddBindingModel.getUserLastName());
-            // TODO: 04-Aug-20 user taken from session - spring security - principal
-//            User user = this.userService.getUserByLastname(bookingAddBindingModel.getUserLastName());
+            UserServiceModel user = this.modelMapper.map(this.userService.getUserByUsername(username),
+                    UserServiceModel.class);
 
             String bookingType = BookingType.HOTEL.toString();
 
@@ -132,6 +134,11 @@ public class HotelController {
 
 
         return modelAndView;
+    }
+
+    @GetMapping("/hotels-booking")
+    public String hotelsBooking(){
+        return "hotels-booking";
     }
 
     private long getOvernights(LocalDateTime startDate, LocalDateTime endDate) {

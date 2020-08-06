@@ -23,7 +23,7 @@
 
 </div>
 <nav class="nav">
-    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+    <th:block th:include="~{fragments/navbar-guest}"></th:block>
 </nav>
 
 <div class="container">
@@ -40,21 +40,50 @@
                         <div class="form-label-group">
                             <input th:field="*{firstName}" type="text" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
                             <label for="inputFirstName"></label>
+
+                            <th:block th:each="error : ${#fields.errors('firstName')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
+
 
                         <div class="form-label-group">
                             <input th:field="*{lastName}" type="text" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
                             <label for="inputLastName"></label>
+
+                            <th:block th:each="error : ${#fields.errors('lastName')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <div class="form-label-group">
                             <input th:field="*{username}" type="text" id="inputUserame" class="form-control" placeholder="Username" required autofocus>
                             <label for="inputUserame"></label>
+
+                            <th:block th:each="error : ${#fields.errors('username')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <div class="form-label-group">
                             <input th:field="*{email}" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
                             <label for="inputEmail"></label>
+
+                            <th:block th:each="error : ${#fields.errors('email')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <hr>
@@ -62,6 +91,13 @@
                         <div class="form-label-group">
                             <input th:field="*{password}" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                             <label for="inputPassword"></label>
+
+                            <th:block th:each="error : ${#fields.errors('password')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <div class="form-label-group">
@@ -80,5 +116,10 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
 </body>
 </html>

@@ -13,11 +13,11 @@ import javax.validation.constraints.NotNull;
 public class UserRegisterBindingModel {
 
     @Column(nullable = false, unique = true)
-    @Length(min = 3, max = 20, message = "Name must be between 3 and 20 characters!")
+    @Length(min = 3, max = 20, message = "First name must be between 3 and 20 characters!")
     private String firstName;
 
     @Column(nullable = false, unique = true)
-    @Length(min = 3, max = 20, message = "Name must be between 3 and 20 characters!")
+    @Length(min = 3, max = 20, message = "Last name must be between 3 and 20 characters!")
     private String lastName;
 
     @NotNull(message = "")

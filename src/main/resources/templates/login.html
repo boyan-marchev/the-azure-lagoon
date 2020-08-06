@@ -21,7 +21,7 @@
     }
 </style>
 <nav class="nav">
-    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+    <th:block th:include="~{fragments/navbar-guest}"></th:block>
 </nav>
 
 
@@ -53,5 +53,10 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
 </body>
 </html>

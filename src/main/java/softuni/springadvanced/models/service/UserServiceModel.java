@@ -2,6 +2,7 @@ package softuni.springadvanced.models.service;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import softuni.springadvanced.models.entity.Role;
 
 import javax.persistence.Column;
 import javax.validation.constraints.DecimalMin;

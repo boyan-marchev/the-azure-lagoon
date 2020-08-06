@@ -1,13 +1,38 @@
 
-.navbar-my, nav {
+.navbar-logged, nav{
     width: 100%;
     background-color: transparent;
+    overflow: auto;
 
 }
 
-.navbar-my li a:hover{
+.navbar-logged, nav li a:hover{
     background-color: transparent;
 }
+
+/*.navbar-logged a {*/
+/*    !*float: left;*!*/
+/*    !*padding: 12px;*!*/
+/*    !*color: white;*!*/
+/*    !*text-decoration: none;*!*/
+/*    !*font-size: 17px;*!*/
+/*    !*width: 12%; !* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. *!*!*/
+/*    !*text-align: center; !* If you want the text to be centered *!*!*/
+/*    */
+/*}*/
+
+.navbar-guest{
+    width: 100%;
+    background-color: transparent;
+    overflow: auto;
+
+}
+
+.navbar-guest li a:hover{
+    background-color: transparent;
+}
+
+
 
 body {
     color: white;
@@ -106,8 +131,20 @@ li a:hover {
     background-color: transparent;
 }
 
+
 footer {
+    display: inline-block;
     position: fixed;
     bottom: 0;
     width: 100%;
+    text-align: center;
+    padding: 2px;
+    background-color: #007bff;
+    color: white;
+    filter: alpha(opacity=50);
+    opacity: 0.75;
+}
+
+.footer a{
+    color: white;
 }

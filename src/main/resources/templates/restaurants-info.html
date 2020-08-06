@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/terraces.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+<form th:action="@{/restaurants/restaurants-info}" th:method="POST"
+      th:object="${bookingAddBindingModel}" class="hotel-booking">
+
+    <div>
+        <label>Choose a hotel:</label>
+        <select th:field="*{facilityName}">
+            <th:block th:each="name : ${hotelsByName}">
+                <option th:text="${name}" th:value="${name}"></option>
+            </th:block>
+
+        </select>
+    </div>
+
+    <div>
+        <label for="lname">Last name</label>
+        <input th:field="*{userLastName}" type="text" id="lname" name="lname" required>
+    </div>
+
+    <div>
+        <label for="start">Start date</label>
+        <input th:field="*{startDate}" type="datetime-local" id="start" name="start date" required>
+    </div>
+
+    <div>
+        <label for="end">End date</label>
+        <input th:field="*{endDate}" type="datetime-local" id="end" name="end date" required>
+    </div>
+
+    <div>
+        <label>Number of guests:</label>
+
+        <select th:field="*{numberOfGuests}" id="guests">
+
+            <th:block th:each="num : ${nums}">
+                <option th:text="${num}" th:value="${num}"></option>
+            </th:block>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Book now</button>
+    </div>
+
+</form>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
 
 </body>
 </html>

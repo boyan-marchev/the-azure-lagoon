@@ -58,22 +58,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceModel getUserServiceModelByLastname(String lastName) {
 
-        User user = this.userRepository.findByLastName(lastName).orElse(null);
+        User user = this.userRepository.findByLastName(lastName)
+                .orElseThrow(() -> new UsernameNotFoundException("No such user found"));
 
-        if (user != null) {
-
-            return this.modelMapper.map(user, UserServiceModel.class);
-
-        } else {
-            return null;
-
-        }
+        return this.modelMapper.map(user, UserServiceModel.class);
 
     }
 
     @Override
     public User getUserByLastname(String lastName) {
-        return this.userRepository.findByLastName(lastName).orElse(null);
+        return this.userRepository.findByLastName(lastName)
+                .orElseThrow(() -> new UsernameNotFoundException("No such user found"));
 
     }
 
@@ -85,17 +80,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel getUserServiceModelById(String id) {
-        User user = this.userRepository.findById(id).orElse(null);
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("No such user found"));
 
-        if (user != null) {
-            UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
+        return this.modelMapper.map(user, UserServiceModel.class);
 
-            return userServiceModel;
-
-        } else {
-            return null;
-
-        }
 
     }
 
@@ -113,17 +102,4 @@ public class UserServiceImpl implements UserService {
                 orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
-//    @Override
-//    public void changeRoleOfUser(String username, String role) {
-//        User user = this.userRepository.findByUsername(username).orElse(null);
-//
-//        if (user != null) {
-//            Role entityRole = this.roleService.getRoleByName(role);
-//
-//            if (entityRole != null && !user.getRole().equals(entityRole)) {
-//                user.setRole(entityRole);
-//                this.userRepository.saveAndFlush(user);
-//            }
-//        }
-//    }
 }
