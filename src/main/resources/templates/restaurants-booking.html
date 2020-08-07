@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+<!--<img src="resources/static/img/weekuri-lagoon.jpg" alt="neraboti">-->
+
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/restaurant-terrace.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
 
 </body>
 </html>

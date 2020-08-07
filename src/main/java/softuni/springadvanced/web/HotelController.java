@@ -63,7 +63,6 @@ public class HotelController {
             model.addAttribute("nums", nums);
         }
 
-
         return "hotels-info";
     }
 
@@ -89,7 +88,7 @@ public class HotelController {
                         || bookingServiceModel.getStartDate().isAfter(bookingServiceModel.getEndDate())) {
 
                     modelAndView.setViewName("redirect:hotels-info");
-
+                    return modelAndView;
                 }
             }
 

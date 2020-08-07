@@ -14,4 +14,5 @@ public interface FacilityService {
 
     List<Facility> getAllFacilities();
 
+    List<String> getAllFacilityNames();
 }

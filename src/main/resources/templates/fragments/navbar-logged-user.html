@@ -6,11 +6,16 @@
             <li><a th:href="@{/}">Lagoon</a></li>
 
             <li><a th:href="@{/hotels/hotels-info}">Hotels</a></li>
-            <li><a th:href="@{/restaurants}">Restaurants</a></li>
-            <li><a th:href="@{/bars}">Bars</a></li>
-            <li><a th:href="@{/sport}">Sport</a></li>
-            <li><a th:href="@{/events}">Events</a></li>
+            <li><a th:href="@{/restaurants/restaurants-info}">Restaurants</a></li>
+            <li><a th:href="@{/bars/bars-info}">Bars</a></li>
+            <li><a th:href="@{/sport-activities/sport-info}">Sport Activities</a></li>
+            <li><a th:href="@{/events/events-info}">Events</a></li>
+
+            <th:block th:if="${#authentication.getAuthorities().size() == 2}">
             <li><a th:href="@{/users/admin}">Admin</a></li>
+
+            </th:block>
+
             <li><a th:href="@{/events}">Profile</a></li>
             <li><a th:href="@{/resort}">Resort info</a></li>
             <li><a th:href="@{/users/logout}">Logout</a></li>

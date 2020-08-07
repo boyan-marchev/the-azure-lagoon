@@ -6,6 +6,7 @@ import softuni.springadvanced.models.entity.Bar;
 import softuni.springadvanced.repositories.BarRepository;
 import softuni.springadvanced.services.BarService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,6 +40,18 @@ public class BarServiceImpl implements BarService {
     @Override
     public List<Bar> getAllBars() {
         return this.barRepository.findAll();
+    }
+
+    @Override
+    public List<String> getAllBarNames() {
+        List<Bar> bars = this.getAllBars();
+        List<String> result = new ArrayList<>();
+
+        for (Bar bar : bars) {
+            result.add(bar.getBarName());
+        }
+
+        return result;
     }
 
     private void createBar(String name, int capacity, int availableSeats) {

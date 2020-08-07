@@ -13,4 +13,6 @@ public interface BarService {
     Bar getBarByName(String barName);
 
     List<Bar> getAllBars();
+
+    List<String> getAllBarNames();
 }

@@ -1,10 +1,12 @@
 
 .navbar-logged, nav{
     width: 100%;
+    color: #007bff;
     background-color: transparent;
     overflow: auto;
 
 }
+
 
 .navbar-logged, nav li a:hover{
     background-color: transparent;
@@ -106,13 +108,16 @@ input{
     background-color: transparent;
 }
 
-
+/*navbar-logged and navbar-guest*/
 ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 2px;
     overflow: hidden;
-    background-color: #333;
+    color: white;
+    background-color: #007bff;
+    filter: alpha(opacity=50);
+    opacity: 0.90;
 }
 
 li {
@@ -131,6 +136,26 @@ li a:hover {
     background-color: transparent;
 }
 
+.welcome{
+    color: whitesmoke;
+    position: absolute;
+    left: 40%;
+    bottom: 15%;
+}
+
+.heaven{
+    color: whitesmoke;
+    position: absolute;
+    left: 42%;
+    bottom: 11%;
+}
+
+.explanation{
+    color: whitesmoke;
+    position: absolute;
+    left: 38%;
+    bottom: 5%;
+}
 
 footer {
     display: inline-block;

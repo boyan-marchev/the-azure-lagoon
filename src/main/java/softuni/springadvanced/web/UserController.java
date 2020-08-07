@@ -3,6 +3,7 @@ package softuni.springadvanced.web;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import softuni.springadvanced.services.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.LinkedHashSet;
 
 @Controller
@@ -42,7 +44,9 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, HttpSession httpSession) {
+    public String login(@ModelAttribute("userLoginBindingModel")
+                                UserLoginBindingModel userLoginBindingModel,
+                        Model model, HttpSession httpSession) {
 
         if (httpSession.getAttribute("user") == null) {
 
@@ -127,7 +131,7 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String admin(){
+    public String admin() {
         return "admin";
     }
 

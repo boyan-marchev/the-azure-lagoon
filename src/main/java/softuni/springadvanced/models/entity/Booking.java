@@ -33,7 +33,8 @@ public class Booking extends BaseEntity{
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 //    @FutureOrPresent(message = "The date cannot be in the past")
     @Future(message = "End date should be after the start date")
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
+//    @NotNull
     private LocalDateTime endDate;
 
 

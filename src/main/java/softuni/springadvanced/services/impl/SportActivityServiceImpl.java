@@ -6,6 +6,7 @@ import softuni.springadvanced.models.entity.SportActivity;
 import softuni.springadvanced.repositories.SportActivityRepository;
 import softuni.springadvanced.services.SportActivityService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +51,17 @@ public class SportActivityServiceImpl implements SportActivityService {
     @Override
     public List<SportActivity> getAllSportActivities() {
         return this.sportActivityRepository.findAll();
+    }
+
+    @Override
+    public List<String> getSportActivityNames() {
+        List<SportActivity> activities = this.getAllSportActivities();
+        List<String> result = new ArrayList<>();
+
+        for (SportActivity activity : activities) {
+            result.add(activity.getSportArt());
+        }
+
+        return result;
     }
 }

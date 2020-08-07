@@ -10,6 +10,7 @@ import softuni.springadvanced.services.EventService;
 import softuni.springadvanced.services.FacilityService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +36,18 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getAllEvents() {
         return this.eventRepository.findAll();
+    }
+
+    @Override
+    public List<String> getAllEventNames() {
+        List<Event> events = this.getAllEvents();
+        List<String> result = new ArrayList<>();
+
+        for (Event event : events) {
+            result.add(event.getEventName());
+        }
+
+        return result;
     }
 
 }

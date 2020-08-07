@@ -31,7 +31,7 @@ public class BookingServiceModel extends BaseServiceModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 //    @FutureOrPresent(message = "The date cannot be in the past")
     @Future(message = "End date should be after the start date")
-    @NotNull
+//    @NotNull
     private LocalDateTime endDate;
 
 

@@ -7,6 +7,7 @@ import softuni.springadvanced.models.entity.Restaurant;
 import softuni.springadvanced.repositories.RestaurantRepository;
 import softuni.springadvanced.services.RestaurantService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,5 +52,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<Restaurant> getAllRestaurants() {
         return this.restaurantRepository.findAll();
+    }
+
+    @Override
+    public List<String> getAllRestaurantsByName() {
+        List<Restaurant> restaurants = this.getAllRestaurants();
+        List<String> result = new ArrayList<>();
+
+        for (Restaurant restaurant : restaurants) {
+            result.add(restaurant.getRestaurantName());
+        }
+
+        return result;
     }
 }

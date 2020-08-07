@@ -8,6 +8,7 @@ import softuni.springadvanced.services.FacilityService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,6 +60,18 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public List<Facility> getAllFacilities() {
         return this.facilityRepository.findAll();
+    }
+
+    @Override
+    public List<String> getAllFacilityNames() {
+        List<Facility> facilities = this.getAllFacilities();
+        List<String> result = new ArrayList<>();
+
+        for (Facility facility : facilities) {
+            result.add(facility.getFacilityName());
+        }
+
+        return result;
     }
 
 }

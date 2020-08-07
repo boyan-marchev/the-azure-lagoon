@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class Facility extends BaseEntity{
     private BigDecimal pricePerHour;
 
     @Transient
-    private Map<String, List<LocalDateTime>> bookedDates = new TreeMap<>();
+    private Map<LocalDate, Map<Integer, Integer>> availabilityPerDayAndHour = new TreeMap<>();
 
     @OneToMany(mappedBy = "facility", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();

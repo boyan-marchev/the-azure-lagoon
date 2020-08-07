@@ -13,4 +13,6 @@ public interface SportActivityService {
     SportActivity getSportActivityByArt(String sportArt);
 
     List<SportActivity> getAllSportActivities();
+
+    List<String> getSportActivityNames();
 }

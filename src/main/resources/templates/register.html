@@ -38,7 +38,7 @@
                     <form th:action="@{/users/register}" th:method="POST" th:object="${userRegisterBindingModel}" class="form-signin">
 
                         <div class="form-label-group">
-                            <input th:field="*{firstName}" type="text" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
+                            <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
                             <label for="inputFirstName"></label>
 
                             <th:block th:each="error : ${#fields.errors('firstName')}">
@@ -51,7 +51,7 @@
 
 
                         <div class="form-label-group">
-                            <input th:field="*{lastName}" type="text" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
+                            <input th:field="*{lastName}" th:errorclass="bg-danger" type="text" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
                             <label for="inputLastName"></label>
 
                             <th:block th:each="error : ${#fields.errors('lastName')}">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="form-label-group">
-                            <input th:field="*{username}" type="text" id="inputUserame" class="form-control" placeholder="Username" required autofocus>
+                            <input th:field="*{username}" th:errorclass="bg-danger" type="text" id="inputUserame" class="form-control" placeholder="Username" required autofocus>
                             <label for="inputUserame"></label>
 
                             <th:block th:each="error : ${#fields.errors('username')}">
@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="form-label-group">
-                            <input th:field="*{email}" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                            <input th:field="*{email}" th:errorclass="bg-danger" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
                             <label for="inputEmail"></label>
 
                             <th:block th:each="error : ${#fields.errors('email')}">
@@ -89,7 +89,7 @@
                         <hr>
 
                         <div class="form-label-group">
-                            <input th:field="*{password}" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <input th:field="*{password}" th:errorclass="bg-danger" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                             <label for="inputPassword"></label>
 
                             <th:block th:each="error : ${#fields.errors('password')}">

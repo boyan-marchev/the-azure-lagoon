@@ -33,15 +33,29 @@
                     <h5 class="card-title text-center">Login</h5>
                     <form th:action="@{/users/login}" th:method="POST" th:object="${userLoginBindingModel}" class="form-signin">
                         <div class="form-label-group">
-                            <input th:field="*{username}" type="text" id="username" class="form-control" placeholder="Username"
+                            <input th:field="*{username}" th:errorclass="bg-danger" type="text" id="username" class="form-control" placeholder="Username"
                                    required>
                             <label for="username"></label>
+
+                            <th:block th:each="error : ${#fields.errors('username')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <div class="form-label-group">
-                            <input th:field="*{password}" type="password" id="inputPassword" class="form-control" placeholder="Password"
+                            <input th:field="*{password}" th:errorclass="bg-danger" type="password" id="inputPassword" class="form-control" placeholder="Password"
                                    required>
                             <label for="inputPassword"></label>
+
+                            <th:block th:each="error : ${#fields.errors('password')}">
+                                <div class="mx-auto">
+                                    <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                                        characters</small>
+                                </div>
+                            </th:block>
                         </div>
 
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Login</button>
