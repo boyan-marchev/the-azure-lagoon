@@ -53,8 +53,13 @@ public class SportActivityController {
                                BookingAddBindingModel bookingAddBindingModel,
                        Model model){
 
+        String title = "Sport";
+        if (!model.containsAttribute(title)){
+            model.addAttribute("title", title);
+        }
+
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
-        List<String> facilityNames = List.of("Multifunctional Sport Hall");
+        List<String> facilityNames = this.facilityService.getAllFacilityNames();
         List<String> sportActivitiesAsString = this.sportActivityService.getSportActivityNames();
 
         if (!model.containsAttribute("facilityNames")) {

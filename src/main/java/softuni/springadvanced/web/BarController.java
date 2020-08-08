@@ -53,6 +53,11 @@ public class BarController {
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> barNames = this.barService.getAllBarNames();
 
+        String title = "Bars";
+        if (!model.containsAttribute(title)){
+            model.addAttribute("title", title);
+        }
+
         if (!model.containsAttribute("barNames")) {
             model.addAttribute("barNames", barNames);
             model.addAttribute("nums", nums);

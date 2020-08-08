@@ -26,6 +26,9 @@ public class Facility extends BaseEntity{
     @Column(unique = true)
     private String facilityName;
 
+    @Column
+    private String facilityType;
+
     @NotNull
     @Min(value = 1)
     @Column

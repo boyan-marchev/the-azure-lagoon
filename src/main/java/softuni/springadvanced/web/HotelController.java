@@ -54,6 +54,11 @@ public class HotelController {
         List<String> hotelsByName = this.hotelService.allHotelsByName();
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
 
+        String title = "Hotels";
+        if (!model.containsAttribute(title)){
+            model.addAttribute("title", title);
+        }
+
         if (!model.containsAttribute("bookingAddBindingModel")) {
             model.addAttribute("bookingAddBindingModel", new BookingAddBindingModel());
         }

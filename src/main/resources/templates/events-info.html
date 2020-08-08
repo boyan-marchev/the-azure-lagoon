@@ -24,7 +24,7 @@
 </style>
 
 <form th:action="@{/events/events-info}" th:method="POST"
-      th:object="${bookingAddBindingModel}" class="restaurant-booking">
+      th:object="${bookingAddBindingModel}" class="event-booking">
 
     <div>
         <label>Event type:</label>
@@ -49,7 +49,7 @@
     </div>
 
     <div>
-        <label for="start">Start date</label>
+        <label for="start">Date and time</label>
         <input th:field="*{startDate}" type="datetime-local" id="start date" name="start date" required>
 
         <th:block th:each="error : ${#fields.errors('startDate')}">

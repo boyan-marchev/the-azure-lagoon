@@ -1,42 +1,34 @@
-package softuni.springadvanced.models.service;
+package softuni.springadvanced.models.binding;
 
-import lombok.*;
-import softuni.springadvanced.models.entity.Event;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class FacilityServiceModel extends BaseServiceModel{
+public class FacilityAddBindingModel {
 
     @NotNull
     private String facilityName;
 
+    @NotNull
     private String facilityType;
 
     @NotNull
     @Min(value = 1)
     private int guestsCapacity;
 
-
     private String description;
 
     @NotNull
     @Min(value = 0)
     private BigDecimal pricePerHour;
-
-    private Map<LocalDate, Map<Integer, Integer>> availabilityPerDayAndHour = new TreeMap<>();
-
-    private List<Event> events = new ArrayList<>();
-
 }

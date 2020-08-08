@@ -47,4 +47,6 @@ public class BookingServiceModel extends BaseServiceModel {
 
     @NotNull
     private UserServiceModel user;
+
+    private boolean isConfirmed = false;
 }

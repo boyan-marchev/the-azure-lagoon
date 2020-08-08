@@ -1,8 +1,11 @@
 package softuni.springadvanced.services.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.entity.EventType;
 import softuni.springadvanced.models.entity.Facility;
+import softuni.springadvanced.models.service.FacilityServiceModel;
 import softuni.springadvanced.repositories.FacilityRepository;
 import softuni.springadvanced.services.FacilityService;
 
@@ -16,15 +19,18 @@ import java.util.List;
 public class FacilityServiceImpl implements FacilityService {
 
     private final FacilityRepository facilityRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public FacilityServiceImpl(FacilityRepository facilityRepository) {
+    public FacilityServiceImpl(FacilityRepository facilityRepository, ModelMapper modelMapper) {
         this.facilityRepository = facilityRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public void saveFacilitiesInDatabase() {
-// admin functionality
+    public void saveFacilityInDatabase(FacilityServiceModel facilityServiceModel) {
+        Facility facility = this.modelMapper.map(facilityServiceModel, Facility.class);
+        this.facilityRepository.saveAndFlush(facility);
     }
 
     @Override
@@ -33,18 +39,21 @@ public class FacilityServiceImpl implements FacilityService {
         if (newFacility.getFacilityName().equals("Congress Hall")){
             newFacility.setGuestsCapacity(80);
             newFacility.setPricePerHour(BigDecimal.valueOf(350));
+            newFacility.setFacilityType(EventType.CONFERENCE.toString());
 
         }
 
         if (newFacility.getFacilityName().equals("Seminar room")){
             newFacility.setGuestsCapacity(50);
             newFacility.setPricePerHour(BigDecimal.valueOf(250));
+            newFacility.setFacilityType(EventType.CONFERENCE.toString());
 
         }
 
         if (newFacility.getFacilityName().equals("Multifunctional Sport Hall")){
             newFacility.setGuestsCapacity(30);
             newFacility.setPricePerHour(BigDecimal.valueOf(60));
+            newFacility.setFacilityType(EventType.SPORT.toString());
 
         }
 
@@ -71,6 +80,28 @@ public class FacilityServiceImpl implements FacilityService {
             result.add(facility.getFacilityName());
         }
 
+        return result;
+    }
+
+    @Override
+    public List<Facility> getFacilityByType(String type) {
+        List<Facility> allFacilities = this.getAllFacilities();
+        List<Facility> result = new ArrayList<>();
+
+        for (Facility facility : allFacilities) {
+            if (facility.getFacilityType().equalsIgnoreCase(type)){
+                result.add(facility);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> getAllFacilityTypes() {
+        List<String> result = new ArrayList<>();
+        for (EventType value : EventType.values()) {
+            result.add(value.toString());
+        }
         return result;
     }
 

@@ -53,7 +53,12 @@ public class EventController {
     @GetMapping("/events-info")
     public String info(@ModelAttribute("bookingAddBindingModel")
                                BookingAddBindingModel bookingAddBindingModel,
-                       Model model){
+                       Model model) {
+
+        String title = "Events";
+        if (!model.containsAttribute(title)){
+            model.addAttribute("title", title);
+        }
 
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> eventTypes = List.of(EventType.CONFERENCE.toString(), EventType.SPORT.toString(),
@@ -81,60 +86,59 @@ public class EventController {
             // TODO: 07-Aug-20 create logic for event request
             BookingServiceModel bookingServiceModel = this.modelMapper.map(bookingAddBindingModel, BookingServiceModel.class);
 
-            int year = bookingServiceModel.getStartDate().getYear();
-            int month = bookingServiceModel.getStartDate().getMonthValue();
-            int day = bookingServiceModel.getStartDate().getDayOfMonth();
-            LocalDate askedDate = LocalDate.of(year, month, day);
+            LocalDate askedDate = getLocalDate(bookingServiceModel);
 
             int hour = bookingServiceModel.getStartDate().getHour();
 
+            int numberOfGuests = bookingAddBindingModel.getNumberOfGuests();
+
+            UserServiceModel user = getUserServiceModel(principal);
+
             String bookingName = bookingAddBindingModel.getUserLastName() + "-" + bookingAddBindingModel.getFacilityName();
-
-            String username = principal.getName();
-
-            UserServiceModel user = this.modelMapper.map(this.userService.getUserByUsername(username),
-                    UserServiceModel.class);
 
             String bookingType = BookingType.EVENT.toString();
 
             String facilityName = bookingAddBindingModel.getFacilityName();
 
-            int numberOfGuests = bookingAddBindingModel.getNumberOfGuests();
-
-            bookingServiceModel.setBookingName(bookingName);
-            bookingServiceModel.setBookingType(bookingType);
-            bookingServiceModel.setUser(user);
-
             BigDecimal price = BigDecimal.ZERO;
 
-            bookingServiceModel.setPrice(price);
+            this.setPropertiesToBookingServiceModel(bookingServiceModel, user, bookingName, bookingType, price);
 
-            Facility facility = this.facilityService.getFacilityByName(facilityName);
+            List<Facility> facilities = this.facilityService.getFacilityByType(facilityName);
 
-            if (facility.getAvailabilityPerDayAndHour() == null || facility.getAvailabilityPerDayAndHour().isEmpty()){
-                if (facility.getAvailabilityPerDayAndHour() != null) {
-                    facility.getAvailabilityPerDayAndHour().put(askedDate, new TreeMap<>());
+            boolean isAvailableCapacity = false;
+
+            for (Facility facility : facilities) {
+
+                if (numberOfGuests > facility.getGuestsCapacity()){
+                    continue;
                 }
-                facility.getAvailabilityPerDayAndHour().get(askedDate)
-                        .put(hour, facility.getGuestsCapacity());
+
+                this.checkFacility(askedDate, hour, facility);
+
+                boolean areAvailableSeatsAtHour = this.getAvailableSeatsPerDateTime(askedDate, hour, facility, numberOfGuests);
+
+                if (areAvailableSeatsAtHour) {
+                    int seatsAtDefinedHour = facility.getAvailabilityPerDayAndHour()
+                            .get(askedDate).get(hour);
+
+                    facility.getAvailabilityPerDayAndHour().get(askedDate)
+                            .put(hour, seatsAtDefinedHour - numberOfGuests);
+
+                    bookingServiceModel.setBookingName(bookingAddBindingModel.getUserLastName() + "-" +
+                            facility.getFacilityName());
+                    this.bookingService.saveBookingInDatabase(bookingServiceModel);
+                    isAvailableCapacity = true;
+                    modelAndView.setViewName("redirect:events-booking");
+//                    return modelAndView;
+                    break;
+
+                }
+
             }
 
-
-            boolean areAvailableSeatsAtHour = this.getAvailableSeatsPerDateTime(askedDate, hour, facility);
-
-            if (areAvailableSeatsAtHour){
-                int seatsAtDefinedHour = facility.getAvailabilityPerDayAndHour()
-                        .get(askedDate).get(hour);
-
-                facility.getAvailabilityPerDayAndHour().get(askedDate)
-                        .put(hour, seatsAtDefinedHour - numberOfGuests);
-
-                this.bookingService.saveBookingInDatabase(bookingServiceModel);
-                modelAndView.setViewName("redirect:events-booking"); // TODO: 07-Aug-20 add html
-
-            } else {
+            if (!isAvailableCapacity) {
                 modelAndView.setViewName("redirect:events-info");
-
             }
 
         }
@@ -142,11 +146,51 @@ public class EventController {
         return modelAndView;
     }
 
-    private boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility) {
+    private void checkFacility(LocalDate askedDate, int hour, Facility facility) {
+        if (facility.getAvailabilityPerDayAndHour() == null || facility.getAvailabilityPerDayAndHour().isEmpty()) {
+            if (facility.getAvailabilityPerDayAndHour() != null) {
+                facility.getAvailabilityPerDayAndHour().put(askedDate, new TreeMap<>());
+            }
+            if (facility.getAvailabilityPerDayAndHour() != null) {
+                facility.getAvailabilityPerDayAndHour().get(askedDate)
+                        .put(hour, facility.getGuestsCapacity());
+            }
+        }
+    }
 
-        return facility.getAvailabilityPerDayAndHour() == null ||
-                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) > 0
-                || facility.getAvailabilityPerDayAndHour().isEmpty();
+    private void setPropertiesToBookingServiceModel(BookingServiceModel bookingServiceModel, UserServiceModel user, String bookingName, String bookingType, BigDecimal price) {
+        bookingServiceModel.setBookingName(bookingName);
+        bookingServiceModel.setBookingType(bookingType);
+        bookingServiceModel.setUser(user);
+        bookingServiceModel.setPrice(price);
+    }
+
+    private LocalDate getLocalDate(BookingServiceModel bookingServiceModel) {
+        int year = bookingServiceModel.getStartDate().getYear();
+        int month = bookingServiceModel.getStartDate().getMonthValue();
+        int day = bookingServiceModel.getStartDate().getDayOfMonth();
+        return LocalDate.of(year, month, day);
+    }
+
+    private UserServiceModel getUserServiceModel(Principal principal) {
+        String username = principal.getName();
+
+        return this.modelMapper.map(this.userService.getUserByUsername(username),
+                UserServiceModel.class);
+    }
+
+    private boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility,
+                                                 int numberOfGuests) {
+
+        if (facility.getAvailabilityPerDayAndHour() == null ||
+                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) > 0 ||
+                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) >= numberOfGuests
+                || facility.getAvailabilityPerDayAndHour().isEmpty()){
+
+            return true;
+        }
+
+        return false;
     }
 
     private void addFlashAttributes(BookingAddBindingModel bookingAddBindingModel, BindingResult bindingResult, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {

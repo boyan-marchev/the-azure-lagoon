@@ -54,5 +54,6 @@ public class Booking extends BaseEntity{
     @ToString.Exclude
     private User user;
 
-
+    @Column
+    private boolean isConfirmed = false;
 }

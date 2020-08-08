@@ -50,6 +50,11 @@ public class RestaurantController {
                                BookingAddBindingModel bookingAddBindingModel,
                        Model model) {
 
+        String title = "Restaurants";
+        if (!model.containsAttribute(title)){
+            model.addAttribute("title", title);
+        }
+
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> restaurantsByName = this.restaurantService.getAllRestaurantsByName();
 

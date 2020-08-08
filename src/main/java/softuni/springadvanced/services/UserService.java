@@ -25,6 +25,8 @@ public interface UserService extends UserDetailsService {
 
     void saveUserInDatabase(UserServiceModel userServiceModel);
 
-//    void changeRoleOfUser(String username, String role);
+    void changeRoleOfUser(String username);
+
+    List<String> getAllUsernamesAsString();
 
 }

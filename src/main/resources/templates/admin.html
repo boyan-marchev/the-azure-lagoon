@@ -6,7 +6,7 @@
 <body>
 
 <nav class="nav">
-    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+    <th:block th:include="~{fragments/navbar-admin}"></th:block>
 </nav>
 <!--<img src="resources/static/img/weekuri-lagoon.jpg" alt="neraboti">-->
 
@@ -16,13 +16,15 @@
 
 <style>
     body {
-        background-image: url('/img/panorama.jpg');
+        background-image: url('/img/white-lagoon.jpg');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;
         background-size: cover;
     }
 </style>
+
+
 
 <footer>
     <th:block th:include="~{fragments/footer}"></th:block>

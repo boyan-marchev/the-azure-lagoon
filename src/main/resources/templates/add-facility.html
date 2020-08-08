@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-admin}"></th:block>
+</nav>
+
+
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/white-lagoon.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+
+<div class="hotel-booking">
+    <form th:action="@{/users/add-facility}" th:method="POST"
+          th:object="${facilityAddBindingModel}" class="facility-add-form">
+
+
+        <div>
+            <label for="lname">Facility name</label>
+            <input th:field="*{facilityName}" type="text" id="lname" name="lname" required placeholder="Facility name">
+        </div>
+
+        <div>
+            <label>Facility type</label>
+            <select th:field="*{facilityType}">
+                <th:block th:each="type : ${allFacilityTypes}">
+                    <option th:text="${type}" th:value="${type}"></option>
+                </th:block>
+
+            </select>
+        </div>
+
+        <div>
+            <label for="number">Guests capacity</label>
+            <input th:field="*{guestsCapacity}" type="number" min="1" max="300" id="number" name="number" required>
+
+        </div>
+
+        <th:block th:each="error : ${#fields.errors('guestsCapacity')}">
+            <div class="mx-auto">
+                <small th:text="${error}" class="text-danger">Password must be betweeen 3 and 10
+                    characters</small>
+            </div>
+        </th:block>
+
+        <div>
+            <label for="descr">Description</label>
+            <input th:field="*{description}" type="text" id="descr" name="description" required placeholder="Description">
+        </div>
+
+        <div>
+            <label for="price">Price per hour</label>
+            <input th:field="*{pricePerHour}" type="number" min="1" max="300" id="price" name="price" required>
+
+        </div>
+
+        <div>
+            <button type="submit">Add facility</button>
+        </div>
+
+    </form>
+</div>
+
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
+
+</body>
+</html>
