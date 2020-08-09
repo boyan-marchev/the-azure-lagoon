@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+<!--<img src="resources/static/img/weekuri-lagoon.jpg" alt="neraboti">-->
+
+<header>
+
+</header>
+
+<main class="error-page">
+
+    <div class="error-page">
+
+        <h2>Ooops. Something went wrong :))</h2>
+<!--        <h5 class="heaven" th:utext="${message}"></h5>-->
+<!--        <img src="">-->
+        <h4><a class="error-page" th:href="@{/home}">Go back to Home Page</a></h4>
+    </div>
+
+</main>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
 
 </body>
 </html>

@@ -173,3 +173,54 @@ footer {
 .footer a{
     color: white;
 }
+
+img{
+    max-width: 100%;
+}
+
+@media (min-device-width:600px) {
+
+    img[data-src-600px] {
+
+        content: attr(data-src-600px, url);
+
+    }
+
+}
+
+@media (min-device-width:800px) {
+
+    img[data-src-800px] {
+
+        content: attr(data-src-800px, url);
+
+    }
+
+}
+
+.all-users{
+    color: whitesmoke;
+
+}
+
+.all-users div{
+    bottom: 40%;
+}
+
+.error-page{
+    color: white;
+}
+
+.resort-info{
+    color: whitesmoke;
+    position: absolute;
+    right: 1%;
+    bottom: 5%;
+}
+
+.confirmation{
+    position: absolute;
+    color: white;
+    left: 40%;
+    bottom: 15%;
+}

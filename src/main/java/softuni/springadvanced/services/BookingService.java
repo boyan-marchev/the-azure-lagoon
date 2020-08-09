@@ -13,4 +13,6 @@ public interface BookingService {
     Booking getBookingByName(String bookingName);
 
     Booking getBookingByUser(User user);
+
+    void deleteBooking(Booking booking);
 }

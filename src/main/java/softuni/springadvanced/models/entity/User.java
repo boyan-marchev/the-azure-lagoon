@@ -61,7 +61,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Role> authorities;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Booking> bookings = new ArrayList<>();
 

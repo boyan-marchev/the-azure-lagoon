@@ -50,4 +50,9 @@ public class BookingServiceImpl implements BookingService {
     public Booking getBookingByUser(User user) {
         return this.bookingRepository.findByUser(user).orElse(null);
     }
+
+    @Override
+    public void deleteBooking(Booking booking) {
+        this.bookingRepository.delete(booking);
+    }
 }

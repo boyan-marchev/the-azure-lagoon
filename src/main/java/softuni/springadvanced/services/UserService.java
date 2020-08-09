@@ -29,4 +29,7 @@ public interface UserService extends UserDetailsService {
 
     List<String> getAllUsernamesAsString();
 
+    List<UserServiceModel> getAllUsersAsServiceModels();
+
+    void deleteUserById(String id);
 }

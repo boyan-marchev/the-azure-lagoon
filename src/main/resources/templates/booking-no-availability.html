@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-logged-user}"></th:block>
+</nav>
+<!--<img src="resources/static/img/weekuri-lagoon.jpg" alt="neraboti">-->
+
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/white-lagoon.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+<div class="confirmation">
+<h2>There is no availability for the requested time period.
+</h2>
+<h4>Please try again with new time frames.
+    <a th:href="@{/hotels/hotels-info}">Start another booking</a></h4>
+
+</div>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
+
+</body>
+</html>

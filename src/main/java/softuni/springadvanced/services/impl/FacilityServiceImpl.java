@@ -105,4 +105,18 @@ public class FacilityServiceImpl implements FacilityService {
         return result;
     }
 
+    @Override
+    public List<String> getSportFacilitiesNames() {
+        List<Facility> allFacilities = this.getAllFacilities();
+        List<String> result = new ArrayList<>();
+
+        for (Facility facility : allFacilities) {
+            if (facility.getFacilityType().equals(EventType.SPORT.toString())){
+                result.add(facility.getFacilityName());
+            }
+        }
+
+        return result;
+    }
+
 }

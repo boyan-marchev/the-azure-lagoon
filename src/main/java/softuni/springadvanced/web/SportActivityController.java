@@ -49,17 +49,13 @@ public class SportActivityController {
     }
 
     @GetMapping("/sport-info")
+    @PageTitle("Sport activities")
     public String info(@ModelAttribute("bookingAddBindingModel")
                                BookingAddBindingModel bookingAddBindingModel,
                        Model model){
 
-        String title = "Sport";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
-
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
-        List<String> facilityNames = this.facilityService.getAllFacilityNames();
+        List<String> facilityNames = this.facilityService.getSportFacilitiesNames();
         List<String> sportActivitiesAsString = this.sportActivityService.getSportActivityNames();
 
         if (!model.containsAttribute("facilityNames")) {
@@ -89,7 +85,7 @@ public class SportActivityController {
             int hour = bookingServiceModel.getStartDate().getHour();
 
             if (hour < 8 || hour > 20) {
-                modelAndView.setViewName("redirect:sport-info"); // TODO: 07-Aug-20 create separate html
+                modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
                 return modelAndView;
 
             }
@@ -139,10 +135,10 @@ public class SportActivityController {
                     .put(hour, seatsAtDefinedHour - numberOfGuests);
 
             this.bookingService.saveBookingInDatabase(bookingServiceModel);
-            modelAndView.setViewName("redirect:sport-booking"); // TODO: 07-Aug-20 add html
+            modelAndView.setViewName("redirect:/bookings/booking-summary");
 
         } else {
-            modelAndView.setViewName("redirect:sport-info");
+            modelAndView.setViewName("redirect:/bookings/booking-no-availability");
 
         }
     }

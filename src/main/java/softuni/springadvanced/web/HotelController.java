@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.springadvanced.models.binding.BookingAddBindingModel;
 import softuni.springadvanced.models.entity.BookingType;
 import softuni.springadvanced.models.entity.Room;
-import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.BookingServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
 import softuni.springadvanced.services.BookingService;
@@ -27,7 +26,6 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,14 +48,10 @@ public class HotelController {
     }
 
     @GetMapping("/hotels-info")
+    @PageTitle("Hotels")
     public String info(Model model, HttpSession httpSession) {
         List<String> hotelsByName = this.hotelService.allHotelsByName();
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
-
-        String title = "Hotels";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         if (!model.containsAttribute("bookingAddBindingModel")) {
             model.addAttribute("bookingAddBindingModel", new BookingAddBindingModel());
@@ -127,10 +121,10 @@ public class HotelController {
                 bookingServiceModel.setPrice(price);
 
                 this.bookingService.saveBookingInDatabase(bookingServiceModel);
-                modelAndView.setViewName("redirect:hotels-booking");
+                modelAndView.setViewName("redirect:/bookings/booking-summary");
 
             } else {
-                modelAndView.setViewName("redirect:hotels-info");
+                modelAndView.setViewName("redirect:/bookings/booking-no-availability");
 
             }
 
@@ -141,8 +135,9 @@ public class HotelController {
     }
 
     @GetMapping("/hotels-booking")
+    @PageTitle("Booking")
     public String hotelsBooking(){
-        return "hotels-booking";
+        return "booking-summary";
     }
 
     private long getOvernights(LocalDateTime startDate, LocalDateTime endDate) {

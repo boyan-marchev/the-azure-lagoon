@@ -6,12 +6,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.entity.Booking;
 import softuni.springadvanced.models.entity.Role;
 import softuni.springadvanced.models.entity.Roles;
 import softuni.springadvanced.models.entity.User;
-import softuni.springadvanced.models.service.RoleServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
 import softuni.springadvanced.repositories.UserRepository;
+import softuni.springadvanced.services.BookingService;
 import softuni.springadvanced.services.RoleService;
 import softuni.springadvanced.services.UserService;
 
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,13 +31,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final RoleService roleService;
+    private final BookingService bookingService;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, @Lazy RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, @Lazy RoleService roleService, @Lazy BookingService bookingService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.roleService = roleService;
+        this.bookingService = bookingService;
     }
 
     @Override
@@ -132,6 +136,24 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<UserServiceModel> getAllUsersAsServiceModels() {
+        return this.getAllUsers().stream()
+                .map(user -> this.modelMapper.map(user, UserServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUserById(String id) {
+        User user = this.modelMapper.map(this.getUserServiceModelById(id), User.class);
+//        List<Booking> bookings = user.getBookings();
+//        for (Booking booking : bookings) {
+//            this.bookingService.deleteBooking(booking);
+//        }
+
+        this.userRepository.deleteById(id);
     }
 
     @Override

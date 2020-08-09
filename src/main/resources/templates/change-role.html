@@ -33,10 +33,10 @@
                        class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Users</label>
                 <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" id="username"
                         name="username">
-                    <option selected>Select user</option>
+                    <option selected>Select user by username</option>
 
                     <th:block th:each="username : ${allUsernames}">
-                        <option th:text="${username}">Pesho</option>
+                        <option th:unless="${#authentication.getName()} eq ${username}" th:text="${username}">Pesho</option>
 
 <!--                        <th:block th:each="error : ${#fields.errors('username')}">-->
 <!--                            <div class="mx-auto">-->

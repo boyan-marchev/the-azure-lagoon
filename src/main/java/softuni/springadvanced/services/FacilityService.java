@@ -20,4 +20,6 @@ public interface FacilityService {
     List<Facility> getFacilityByType(String type);
 
     List<String> getAllFacilityTypes();
+
+    List<String> getSportFacilitiesNames();
 }

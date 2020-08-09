@@ -51,14 +51,10 @@ public class EventController {
     }
 
     @GetMapping("/events-info")
+    @PageTitle("Events")
     public String info(@ModelAttribute("bookingAddBindingModel")
                                BookingAddBindingModel bookingAddBindingModel,
                        Model model) {
-
-        String title = "Events";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> eventTypes = List.of(EventType.CONFERENCE.toString(), EventType.SPORT.toString(),
@@ -83,7 +79,6 @@ public class EventController {
 
         } else {
 
-            // TODO: 07-Aug-20 create logic for event request
             BookingServiceModel bookingServiceModel = this.modelMapper.map(bookingAddBindingModel, BookingServiceModel.class);
 
             LocalDate askedDate = getLocalDate(bookingServiceModel);
@@ -138,7 +133,7 @@ public class EventController {
             }
 
             if (!isAvailableCapacity) {
-                modelAndView.setViewName("redirect:events-info");
+                modelAndView.setViewName("redirect:/bookings/booking-no-availability");
             }
 
         }
@@ -200,4 +195,5 @@ public class EventController {
                         , bindingResult);
         modelAndView.setViewName("redirect:events-info");
     }
+
 }

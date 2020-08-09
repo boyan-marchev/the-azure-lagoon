@@ -24,7 +24,6 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -46,14 +45,10 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants-info")
+    @PageTitle("Restaurants")
     public String info(@ModelAttribute("bookingAddBindingModel")
                                BookingAddBindingModel bookingAddBindingModel,
                        Model model) {
-
-        String title = "Restaurants";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> restaurantsByName = this.restaurantService.getAllRestaurantsByName();
@@ -92,7 +87,7 @@ public class RestaurantController {
 
 
             if (hour < 10 || hour > 21) {
-                modelAndView.setViewName("redirect:restaurants-info");
+                modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
                 return modelAndView;
 
             }
@@ -138,10 +133,10 @@ public class RestaurantController {
                         .put(hour, seatsAtDefinedHour - numberOfGuests);
 
                 this.bookingService.saveBookingInDatabase(bookingServiceModel);
-                modelAndView.setViewName("redirect:restaurants-booking");
+                modelAndView.setViewName("redirect:/bookings/booking-summary");
 
             } else {
-                modelAndView.setViewName("redirect:restaurants-info");
+                modelAndView.setViewName("redirect:/bookings/booking-no-availability");
 
             }
 
@@ -151,6 +146,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants-booking")
+    @PageTitle("Booking")
     public String restaurantsBooking(Model model) {
 
         return "restaurants-booking";

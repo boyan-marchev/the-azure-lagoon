@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<nav class="nav">
+    <th:block th:include="~{fragments/navbar-admin}"></th:block>
+</nav>
+<!--<img src="resources/static/img/weekuri-lagoon.jpg" alt="neraboti">-->
+
+<header>
+
+</header>
+
+<style>
+    body {
+        background-image: url('/img/white-lagoon.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+<label class="all-users">All users:</label>
+<div class="all-users" th:each="user : ${userDeleteViewModels}">
+    <span th:unless="${#authentication.getName()} eq ${user.username}" th:text="'Name: ' + ${user.firstName} + ' Surname: ' + ${user.lastName} + ' username: ' + ${user.username}"></span>
+    <a class="all-users" th:unless="${#authentication.getName()} eq ${user.username}" th:href="@{/users/delete-user/{id}(id = *{user.id})}">Delete user</a>
+<!--    <div class="input-group mb-3">-->
+<!--        <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">-->
+<!--            <button th:href="@{/users/delete/{id}(id = *{user.id})}" type="submit" class="btn btn-primary">Delete user-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+
+</footer>
+
+
+</body>
+</html>

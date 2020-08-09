@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.springadvanced.models.binding.FacilityAddBindingModel;
-import softuni.springadvanced.models.binding.RoleAddBindingModel;
 import softuni.springadvanced.models.binding.UserLoginBindingModel;
 import softuni.springadvanced.models.binding.UserRegisterBindingModel;
 import softuni.springadvanced.models.entity.Roles;
@@ -18,6 +17,8 @@ import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.FacilityServiceModel;
 import softuni.springadvanced.models.service.RoleServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
+import softuni.springadvanced.models.view.UserChangeRoleViewModel;
+import softuni.springadvanced.models.view.UserDeleteViewModel;
 import softuni.springadvanced.services.FacilityService;
 import softuni.springadvanced.services.RoleService;
 import softuni.springadvanced.services.UserService;
@@ -49,14 +50,10 @@ public class UserController {
     }
 
     @GetMapping("/login")
+    @PageTitle("Login")
     public String login(@ModelAttribute("userLoginBindingModel")
                                 UserLoginBindingModel userLoginBindingModel,
                         Model model, HttpSession httpSession) {
-
-        String title = "Login";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         if (httpSession.getAttribute("user") == null) {
 
@@ -72,14 +69,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login";
+    }
+
 
     @GetMapping("/register")
+    @PageTitle("Register")
     public String register(Model model, HttpSession httpSession) {
-
-        String title = "Register";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         if (httpSession.getAttribute("user") == null) {
 
@@ -146,19 +145,15 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String admin(Model model) {
-        String title = "Admin";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
+    @PageTitle("Admin")
+    public String admin() {
+
         return "admin";
     }
 
     @GetMapping("/change-role")
-    public ModelAndView changeRole(@ModelAttribute("roleAddBindingModel") RoleAddBindingModel roleAddBindingModel,
-                                   BindingResult bindingResult, ModelAndView modelAndView) {
-        String title = "Set role";
-        modelAndView.addObject("title", title);
+    @PageTitle("Change role")
+    public ModelAndView changeRole(ModelAndView modelAndView) {
 
         List<String> allUsernames = this.userService.getAllUsers().stream()
                 .map(User::getUsername).collect(Collectors.toList());
@@ -170,42 +165,21 @@ public class UserController {
 
     }
 
-//    @PostMapping("/change-role/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ModelAndView setRoleOfUser(@PathVariable String id, ModelAndView modelAndView) {
-//        this.changeRoleOfUser(id);
-//        modelAndView.setViewName("redirect:admin");
-//
-//        return modelAndView;
-//    }
 
     @PostMapping("/change-role")
-    public ModelAndView changeRolePost(@Valid @ModelAttribute("roleAddBindingModel") RoleAddBindingModel roleAddBindingModel,
-                                       BindingResult bindingResult, ModelAndView modelAndView,
-                                       RedirectAttributes redirectAttributes) {
+    public ModelAndView changeRolePost(@ModelAttribute("userChangeRoleViewModel")UserChangeRoleViewModel userChangeRoleViewModel,
+                                       ModelAndView modelAndView) {
 
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("roleAddBindingModel", roleAddBindingModel);
-            modelAndView.setViewName("redirect:change-role");
-
-        } else {
-            String username = roleAddBindingModel.getUsername();
+            String username = userChangeRoleViewModel.getUsername();
             this.userService.changeRoleOfUser(username);
             modelAndView.setViewName("redirect:admin");
-
-        }
 
         return modelAndView;
     }
 
     @GetMapping("/add-facility")
+    @PageTitle("Add facility")
     public String addFacility(Model model) {
-
-        String title = "Add facility";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         List<String> allFacilityTypes = this.facilityService.getAllFacilityTypes();
 
@@ -219,10 +193,10 @@ public class UserController {
 
     @PostMapping("/add-facility")
     public ModelAndView addFacilityPost(@Valid @ModelAttribute("facilityAddBindingModel")
-                                        FacilityAddBindingModel facilityAddBindingModel,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes,
-                                ModelAndView modelAndView) {
+                                                FacilityAddBindingModel facilityAddBindingModel,
+                                        BindingResult bindingResult,
+                                        RedirectAttributes redirectAttributes,
+                                        ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("facilityAddBindingModel", facilityAddBindingModel);
@@ -242,5 +216,30 @@ public class UserController {
         }
         return modelAndView;
     }
+
+    // TODO: 09-Aug-20 Implement and test methods
+//    @GetMapping("/delete-user/{id}")
+//    @PageTitle("Delete user")
+//    public ModelAndView deleteUser(ModelAndView modelAndView) {
+//
+//        List<UserDeleteViewModel> userDeleteViewModels =
+//                this.userService.getAllUsersAsServiceModels().stream()
+//                        .map(userServiceModel -> this.modelMapper.map(userServiceModel, UserDeleteViewModel.class))
+//                        .collect(Collectors.toList());
+//
+//        modelAndView.addObject("userDeleteViewModels", userDeleteViewModels);
+//
+//        modelAndView.setViewName("delete-user");
+//        return modelAndView;
+//
+//    }
+//
+//    @PostMapping("/delete-user/{id}")
+//    public ModelAndView deleteUserPost(@PathVariable("id") String id, ModelAndView modelAndView) {
+//        this.userService.deleteUserById(id);
+//        modelAndView.setViewName("redirect:admin");
+//
+//        return modelAndView;
+//    }
 
 }

@@ -46,17 +46,13 @@ public class BarController {
     }
 
     @GetMapping("/bars-info")
+    @PageTitle("Bars")
     public String info(@ModelAttribute("bookingAddBindingModel")
                                    BookingAddBindingModel bookingAddBindingModel,
                        Model model){
 
         List<Integer> nums = List.of(1, 2, 3, 4, 5);
         List<String> barNames = this.barService.getAllBarNames();
-
-        String title = "Bars";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
 
         if (!model.containsAttribute("barNames")) {
             model.addAttribute("barNames", barNames);
@@ -89,7 +85,7 @@ public class BarController {
 
 
             if (hour < 10 || hour > 22) {
-                modelAndView.setViewName("redirect:bars-info"); // TODO: 07-Aug-20 create separate html
+                modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
                 return modelAndView;
 
             }

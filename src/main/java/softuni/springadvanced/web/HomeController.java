@@ -16,22 +16,17 @@ public class HomeController {
 
     @GetMapping("/")
     @PreAuthorize("isAnonymous()")
-    public String index(Model model) {
-        String title = "Index";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
+    @PageTitle("Index")
+    public String index() {
 
         return "index";
     }
 
     @GetMapping("/home")
     @PreAuthorize("isAuthenticated()")
-    public String home(Model model){
-        String title = "Home";
-        if (!model.containsAttribute(title)){
-            model.addAttribute("title", title);
-        }
+    @PageTitle("Home")
+    public String home(){
+
         return "home";
     }
 }
