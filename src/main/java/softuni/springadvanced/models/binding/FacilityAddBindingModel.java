@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Min;
@@ -11,12 +12,12 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class FacilityAddBindingModel {
 
     @NotNull
+    @Length(min = 3)
     private String facilityName;
 
     @NotNull
@@ -29,6 +30,6 @@ public class FacilityAddBindingModel {
     private String description;
 
     @NotNull
-    @Min(value = 0)
+    @Min(value = 1)
     private BigDecimal pricePerHour;
 }

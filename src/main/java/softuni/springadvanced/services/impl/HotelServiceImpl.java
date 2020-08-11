@@ -8,6 +8,8 @@ import softuni.springadvanced.repositories.HotelRepository;
 import softuni.springadvanced.services.HotelService;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +80,12 @@ public class HotelServiceImpl implements HotelService {
         }
 
         return result;
+    }
+
+    @Override
+    public long getOvernights(LocalDateTime startDate, LocalDateTime endDate) {
+        Duration duration = Duration.between(startDate, endDate);
+        return duration.toDays();
     }
 
 

@@ -3,11 +3,14 @@ package softuni.springadvanced.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.springadvanced.models.entity.Bar;
+import softuni.springadvanced.models.service.BookingServiceModel;
 import softuni.springadvanced.repositories.BarRepository;
 import softuni.springadvanced.services.BarService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class BarServiceImpl implements BarService {
@@ -52,6 +55,26 @@ public class BarServiceImpl implements BarService {
         }
 
         return result;
+    }
+
+    @Override
+    public void putMapToBar(BookingServiceModel bookingServiceModel, Bar bar, LocalDate askedDate) {
+        if (bar.getAvailableSeatsPerDayAndHour() == null || bar.getAvailableSeatsPerDayAndHour().isEmpty()){
+            if (bar.getAvailableSeatsPerDayAndHour() != null) {
+                bar.getAvailableSeatsPerDayAndHour().put(askedDate, new TreeMap<>());
+            }
+            if (bar.getAvailableSeatsPerDayAndHour() != null) {
+                bar.getAvailableSeatsPerDayAndHour().get(askedDate)
+                        .put(bookingServiceModel.getStartDate().getHour(), bar.getAvailableSeats());
+            }
+        }
+    }
+
+    @Override
+    public boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Bar bar) {
+        return bar.getAvailableSeatsPerDayAndHour() == null ||
+                bar.getAvailableSeatsPerDayAndHour().get(askedDate).get(hour) > 0
+                || bar.getAvailableSeatsPerDayAndHour().isEmpty();
     }
 
     private void createBar(String name, int capacity, int availableSeats) {

@@ -1,8 +1,11 @@
 package softuni.springadvanced.services;
 
+import softuni.springadvanced.models.binding.BookingAddBindingModel;
 import softuni.springadvanced.models.entity.Booking;
 import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.BookingServiceModel;
+
+import java.time.LocalDate;
 
 public interface BookingService {
 
@@ -15,4 +18,8 @@ public interface BookingService {
     Booking getBookingByUser(User user);
 
     void deleteBooking(Booking booking);
+
+    BookingServiceModel getBookingByPrincipalName(BookingAddBindingModel bookingAddBindingModel, String username, String type);
+
+    LocalDate getLocalDateByBookingServiceModel(BookingServiceModel bookingServiceModel);
 }

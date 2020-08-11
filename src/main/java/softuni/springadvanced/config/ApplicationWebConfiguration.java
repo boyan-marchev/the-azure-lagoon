@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import softuni.springadvanced.web.FaviconInterceptor;
-import softuni.springadvanced.web.PageTitleInterceptor;
+import softuni.springadvanced.web.interceptors.FaviconInterceptor;
+import softuni.springadvanced.web.interceptors.PageTitleInterceptor;
 
 @Configuration
 public class ApplicationWebConfiguration implements WebMvcConfigurer {

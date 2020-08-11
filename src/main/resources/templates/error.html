@@ -19,9 +19,12 @@
     <div class="error-page">
 
         <h2>Ooops. Something went wrong :))</h2>
-<!--        <h5 class="heaven" th:utext="${message}"></h5>-->
-<!--        <img src="">-->
+        <div>
+            <h3  th:utext="${message}" style="font-size: 25px; color: whitesmoke;"></h3>
+        </div>
         <h4><a class="error-page" th:href="@{/home}">Go back to Home Page</a></h4>
+
+        <span style="visibility: hidden">....</span>
     </div>
 
 </main>

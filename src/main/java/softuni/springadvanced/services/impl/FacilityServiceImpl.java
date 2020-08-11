@@ -11,8 +11,10 @@ import softuni.springadvanced.services.FacilityService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 @Transactional
@@ -117,6 +119,27 @@ public class FacilityServiceImpl implements FacilityService {
         }
 
         return result;
+    }
+
+    @Override
+    public void putMapToFacility(LocalDate askedDate, int hour, Facility facility) {
+        if (facility.getAvailabilityPerDayAndHour() == null || facility.getAvailabilityPerDayAndHour().isEmpty()) {
+            if (facility.getAvailabilityPerDayAndHour() != null) {
+                facility.getAvailabilityPerDayAndHour().put(askedDate, new TreeMap<>());
+            }
+            if (facility.getAvailabilityPerDayAndHour() != null) {
+                facility.getAvailabilityPerDayAndHour().get(askedDate)
+                        .put(hour, facility.getGuestsCapacity());
+            }
+        }
+    }
+
+    @Override
+    public boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility, int numberOfGuests) {
+        return facility.getAvailabilityPerDayAndHour() == null ||
+                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) > 0 ||
+                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) >= numberOfGuests
+                || facility.getAvailabilityPerDayAndHour().isEmpty();
     }
 
 }

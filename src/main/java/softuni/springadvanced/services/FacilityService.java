@@ -3,6 +3,7 @@ package softuni.springadvanced.services;
 import softuni.springadvanced.models.entity.Facility;
 import softuni.springadvanced.models.service.FacilityServiceModel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface FacilityService {
@@ -22,4 +23,8 @@ public interface FacilityService {
     List<String> getAllFacilityTypes();
 
     List<String> getSportFacilitiesNames();
+
+    void putMapToFacility(LocalDate askedDate, int hour, Facility facility);
+
+    boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility, int numberOfGuests);
 }

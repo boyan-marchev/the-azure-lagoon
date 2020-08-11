@@ -7,8 +7,10 @@ import softuni.springadvanced.models.entity.Restaurant;
 import softuni.springadvanced.repositories.RestaurantRepository;
 import softuni.springadvanced.services.RestaurantService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -64,5 +66,25 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Restaurant restaurant) {
+        return restaurant.getAvailableSeatsPerDayAndHour() == null ||
+                restaurant.getAvailableSeatsPerDayAndHour().get(askedDate).get(hour) > 0
+                || restaurant.getAvailableSeatsPerDayAndHour().isEmpty();
+    }
+
+    @Override
+    public void putMapToRestaurantIfAbsent(LocalDate askedDate, Restaurant restaurant, int hour) {
+        if (restaurant.getAvailableSeatsPerDayAndHour() == null || restaurant.getAvailableSeatsPerDayAndHour().isEmpty()){
+            if (restaurant.getAvailableSeatsPerDayAndHour() != null) {
+                restaurant.getAvailableSeatsPerDayAndHour().put(askedDate, new TreeMap<>());
+            }
+            if (restaurant.getAvailableSeatsPerDayAndHour() != null) {
+                restaurant.getAvailableSeatsPerDayAndHour().get(askedDate)
+                        .put(hour, restaurant.getAvailableSeats());
+            }
+        }
     }
 }

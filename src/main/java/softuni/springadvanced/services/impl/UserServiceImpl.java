@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import softuni.springadvanced.models.entity.Booking;
 import softuni.springadvanced.models.entity.Role;
 import softuni.springadvanced.models.entity.Roles;
 import softuni.springadvanced.models.entity.User;
+import softuni.springadvanced.models.service.RoleServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
+import softuni.springadvanced.models.view.UserChangeRoleViewModel;
 import softuni.springadvanced.repositories.UserRepository;
 import softuni.springadvanced.services.BookingService;
 import softuni.springadvanced.services.RoleService;
@@ -19,8 +21,7 @@ import softuni.springadvanced.services.UserService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -31,15 +32,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final RoleService roleService;
-    private final BookingService bookingService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, @Lazy RoleService roleService, @Lazy BookingService bookingService) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, @Lazy RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.roleService = roleService;
-        this.bookingService = bookingService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -98,8 +99,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUserInDatabase(UserServiceModel userServiceModel) {
-        User user = this.modelMapper.map(userServiceModel, User.class);
+        if (this.getAllUsers().size() == 0) {
+            userServiceModel.setAuthorities(this.roleService.getAllAuthoritiesAsServiceModels());
 
+        } else {
+            userServiceModel.setAuthorities(new LinkedHashSet<>());
+            userServiceModel.getAuthorities().add(this.modelMapper.map(this.roleService.getRoleByAuthority("ROLE_USER"),
+                    RoleServiceModel.class));
+        }
+
+        userServiceModel.setPassword(bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+
+        User user = this.modelMapper.map(userServiceModel, User.class);
         user.setBudget(BigDecimal.ZERO);
         this.userRepository.saveAndFlush(user);
     }
@@ -112,7 +123,7 @@ public class UserServiceImpl implements UserService {
         if (user.getAuthorities().size() == 2) {
             user.getAuthorities().clear();
 
-            Role role = this.roleService.getRoleByAuthority(Roles.USER.toString());
+            Role role = this.roleService.getRoleByAuthority("ROLE_USER");
 
             user.getAuthorities().add(role);
             this.userRepository.save(user);
@@ -154,6 +165,25 @@ public class UserServiceImpl implements UserService {
 //        }
 
         this.userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserChangeRoleViewModel> getAllUsersAsViewChangeRoleModels() {
+        List<UserChangeRoleViewModel> result = new ArrayList<>();
+
+        List<UserServiceModel> all = this.getAllUsersAsServiceModels();
+        for (UserServiceModel userServiceModel : all) {
+            Set<String> toUpdate = new HashSet<>();
+
+            for (RoleServiceModel authority : userServiceModel.getAuthorities()) {
+                toUpdate.add(authority.getAuthority());
+            }
+            UserChangeRoleViewModel userView = this.modelMapper.map(userServiceModel, UserChangeRoleViewModel.class);
+            userView.setAuthorities(toUpdate);
+            result.add(userView);
+        }
+
+        return result;
     }
 
     @Override

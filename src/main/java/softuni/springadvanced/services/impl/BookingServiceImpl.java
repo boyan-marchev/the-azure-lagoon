@@ -3,14 +3,19 @@ package softuni.springadvanced.services.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.binding.BookingAddBindingModel;
 import softuni.springadvanced.models.entity.Booking;
+import softuni.springadvanced.models.entity.BookingType;
 import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.BookingServiceModel;
+import softuni.springadvanced.models.service.UserServiceModel;
 import softuni.springadvanced.repositories.BookingRepository;
 import softuni.springadvanced.services.BookingService;
 import softuni.springadvanced.services.UserService;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -54,5 +59,29 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void deleteBooking(Booking booking) {
         this.bookingRepository.delete(booking);
+    }
+
+    @Override
+    public BookingServiceModel getBookingByPrincipalName(BookingAddBindingModel bookingAddBindingModel, String username, String type) {
+        BookingServiceModel bookingServiceModel = this.modelMapper.map(bookingAddBindingModel, BookingServiceModel.class);
+        String bookingName = bookingAddBindingModel.getUserLastName() + "-" + bookingAddBindingModel.getFacilityName();
+        bookingServiceModel.setBookingName(bookingName);
+        bookingServiceModel.setBookingType(type);
+
+        UserServiceModel user = this.modelMapper.
+                map(this.userService.getUserByUsername(username), UserServiceModel.class);
+        bookingServiceModel.setUser(user);
+
+        BigDecimal price = BigDecimal.ZERO;
+        bookingServiceModel.setPrice(price);
+        return bookingServiceModel;
+    }
+
+    @Override
+    public LocalDate getLocalDateByBookingServiceModel(BookingServiceModel bookingServiceModel) {
+        int year = bookingServiceModel.getStartDate().getYear();
+        int month = bookingServiceModel.getStartDate().getMonthValue();
+        int day = bookingServiceModel.getStartDate().getDayOfMonth();
+        return LocalDate.of(year, month, day);
     }
 }

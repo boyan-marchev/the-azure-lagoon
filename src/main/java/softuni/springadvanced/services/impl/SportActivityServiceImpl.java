@@ -2,10 +2,12 @@ package softuni.springadvanced.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.entity.Facility;
 import softuni.springadvanced.models.entity.SportActivity;
 import softuni.springadvanced.repositories.SportActivityRepository;
 import softuni.springadvanced.services.SportActivityService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +65,12 @@ public class SportActivityServiceImpl implements SportActivityService {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility) {
+        return facility.getAvailabilityPerDayAndHour() == null ||
+                facility.getAvailabilityPerDayAndHour().get(askedDate).get(hour) > 0
+                || facility.getAvailabilityPerDayAndHour().isEmpty();
     }
 }

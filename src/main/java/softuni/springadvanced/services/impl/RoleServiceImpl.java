@@ -13,6 +13,7 @@ import softuni.springadvanced.services.UserService;
 import javax.transaction.Transactional;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 //@Transactional
@@ -27,14 +28,6 @@ public class RoleServiceImpl implements RoleService {
         this.modelMapper = modelMapper1;
     }
 
-//    @PostConstruct
-//    public void init() {
-//        if (this.getAllRoles().size() == 0) {
-//            this.saveRoleTypesInDatabase();
-//
-//        }
-//    }
-
     @Override
     public Role getRoleByAuthority(String authority) {
         return this.roleRepository.findByAuthority(authority);
@@ -43,8 +36,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void saveRoleTypesInDatabase() {
 
-        Role admin = new Role(Roles.ADMIN.toString());
-        Role user = new Role(Roles.USER.toString());
+        Role admin = new Role("ROLE_ADMIN");
+        Role user = new Role("ROLE_USER");
 
         this.roleRepository.save(admin);
         this.roleRepository.save(user);
@@ -58,15 +51,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Set<RoleServiceModel> getAllAuthoritiesAsServiceModels() {
-        Set<Role> all = this.roleRepository.findAllAuthorities();
-        Set<RoleServiceModel> serviceModels = new LinkedHashSet<>();
-
-        for (Role role : all) {
-            RoleServiceModel roleServiceModel = this.modelMapper.map(role, RoleServiceModel.class);
-            serviceModels.add(roleServiceModel);
-        }
-
-        return serviceModels;
+//        Set<Role> all = this.roleRepository.findAllAuthorities();
+//        Set<RoleServiceModel> serviceModels = new LinkedHashSet<>();
+//
+//        for (Role role : all) {
+//            RoleServiceModel roleServiceModel = this.modelMapper.map(role, RoleServiceModel.class);
+//            serviceModels.add(roleServiceModel);
+//        }
+//
+//        return serviceModels;
+        return this.getAllAuthorities().stream().map(role -> this.modelMapper
+                .map(role, RoleServiceModel.class)).collect(Collectors.toSet());
     }
 
 

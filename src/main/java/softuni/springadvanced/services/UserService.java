@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.UserServiceModel;
+import softuni.springadvanced.models.view.UserChangeRoleViewModel;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface UserService extends UserDetailsService {
     List<UserServiceModel> getAllUsersAsServiceModels();
 
     void deleteUserById(String id);
+
+    List<UserChangeRoleViewModel> getAllUsersAsViewChangeRoleModels();
 }
