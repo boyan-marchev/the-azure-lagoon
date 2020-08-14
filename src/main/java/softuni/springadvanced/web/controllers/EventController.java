@@ -104,8 +104,7 @@ public class EventController {
                         int seatsAtDefinedHour = facility.getAvailabilityPerDayAndHour()
                                 .get(askedDate).get(hour);
 
-                        facility.getAvailabilityPerDayAndHour().get(askedDate)
-                                .put(hour, seatsAtDefinedHour - numberOfGuests);
+                        this.facilityService.setNumberOfSeatsInMap(askedDate, hour, numberOfGuests, facility, seatsAtDefinedHour);
 
                         bookingServiceModel.setBookingName(bookingAddBindingModel.getUserLastName() + "-" +
                                 facility.getFacilityName());
@@ -124,6 +123,11 @@ public class EventController {
 
         }
         return modelAndView;
+    }
+
+    private void setNumberOfSeatsInMap(LocalDate askedDate, int hour, int numberOfGuests, Facility facility, int seatsAtDefinedHour) {
+        facility.getAvailabilityPerDayAndHour().get(askedDate)
+                .put(hour, seatsAtDefinedHour - numberOfGuests);
     }
 
 }

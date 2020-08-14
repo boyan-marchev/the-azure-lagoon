@@ -88,8 +88,7 @@ public class RestaurantController {
                 int seatsAtDefinedHour = restaurant.getAvailableSeatsPerDayAndHour()
                         .get(askedDate).get(hour);
 
-                restaurant.getAvailableSeatsPerDayAndHour().get(askedDate)
-                        .put(hour, seatsAtDefinedHour - numberOfGuests);
+                this.restaurantService.setNumberOfAvailableRoomsInMap(askedDate, restaurant, hour, numberOfGuests, seatsAtDefinedHour);
 
                 this.bookingService.saveBookingInDatabase(bookingServiceModel);
                 modelAndView.setViewName("redirect:/bookings/booking-summary");

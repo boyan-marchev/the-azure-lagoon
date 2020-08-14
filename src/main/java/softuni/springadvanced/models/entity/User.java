@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,15 @@ public class User extends BaseEntity implements UserDetails {
 
     @DecimalMin(value = "0")
     private BigDecimal budget;
+
+    @NotNull
+    @Min(value = 0)
+    @Column
+    private int clubMemberPoints;
+
+    @NotNull
+    @Column
+    private String memberStatus;
 
 
     @ToString.Exclude

@@ -7,14 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.entity.MemberStatus;
 import softuni.springadvanced.models.entity.Role;
-import softuni.springadvanced.models.entity.Roles;
 import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.RoleServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
 import softuni.springadvanced.models.view.UserChangeRoleViewModel;
 import softuni.springadvanced.repositories.UserRepository;
-import softuni.springadvanced.services.BookingService;
 import softuni.springadvanced.services.RoleService;
 import softuni.springadvanced.services.UserService;
 
@@ -109,9 +108,11 @@ public class UserServiceImpl implements UserService {
         }
 
         userServiceModel.setPassword(bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+        userServiceModel.setBudget(BigDecimal.ZERO);
+        userServiceModel.setMemberStatus(MemberStatus.ROOKIE.toString());
+        userServiceModel.setClubMemberPoints(0);
 
         User user = this.modelMapper.map(userServiceModel, User.class);
-        user.setBudget(BigDecimal.ZERO);
         this.userRepository.saveAndFlush(user);
     }
 
@@ -184,6 +185,34 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    public void addMemberPointsToUsersInDb() {
+        List<User> allUsers = this.getAllUsers();
+        for (User user : allUsers) {
+            user.setClubMemberPoints(user.getClubMemberPoints() + 3);
+        }
+
+        this.userRepository.saveAll(allUsers);
+    }
+
+    @Override
+    public void checkMemberStatusOfUsers() {
+        List<User> allUsers = this.getAllUsers();
+        for (User user : allUsers) {
+            if (user.getClubMemberPoints() > 100 && user.getMemberStatus().equals(MemberStatus.ROOKIE.toString())){
+                user.setMemberStatus(MemberStatus.SILVER.toString());
+
+            } else if (user.getClubMemberPoints() > 250 && user.getMemberStatus().equals(MemberStatus.SILVER.toString())){
+                user.setMemberStatus(MemberStatus.GOLDEN.toString());
+
+            } else if (user.getClubMemberPoints() > 365 && user.getMemberStatus().equals(MemberStatus.GOLDEN.toString())){
+                user.setMemberStatus(MemberStatus.SENATOR.toString());
+            }
+        }
+
+        this.userRepository.saveAll(allUsers);
     }
 
     @Override

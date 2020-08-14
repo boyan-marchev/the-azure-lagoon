@@ -21,4 +21,6 @@ public interface BarService {
     void putMapToBar(BookingServiceModel bookingServiceModel, Bar bar, LocalDate askedDate);
 
     boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Bar bar);
+
+    void setNumberOfSeatsInMap(BookingServiceModel bookingServiceModel, LocalDate askedDate, int numberOfGuests, Bar bar, int seatsAtDefinedHour);
 }

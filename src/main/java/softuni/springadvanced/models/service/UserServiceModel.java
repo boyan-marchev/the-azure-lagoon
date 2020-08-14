@@ -7,6 +7,7 @@ import softuni.springadvanced.models.entity.Role;
 import javax.persistence.Column;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,6 +42,13 @@ public class UserServiceModel extends BaseServiceModel {
 
     @DecimalMin(value = "0")
     private BigDecimal budget;
+
+    @NotNull
+    @Min(value = 0)
+    private int clubMemberPoints;
+
+    @NotNull
+    private String memberStatus;
 
     private Set<RoleServiceModel> authorities;
 

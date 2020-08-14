@@ -35,4 +35,8 @@ public interface UserService extends UserDetailsService {
     void deleteUserById(String id);
 
     List<UserChangeRoleViewModel> getAllUsersAsViewChangeRoleModels();
+
+    void addMemberPointsToUsersInDb();
+
+    void checkMemberStatusOfUsers();
 }

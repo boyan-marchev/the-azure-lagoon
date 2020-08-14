@@ -43,6 +43,7 @@ public class RoomServiceImpl implements RoomService {
                 room.getBookedDates().get(bookingName).add(0, startDate);
                 room.getBookedDates().get(bookingName).add(1, endDate);
 
+                this.roomRepository.save(room);
                 return room;
 
             } else {
@@ -57,6 +58,7 @@ public class RoomServiceImpl implements RoomService {
                         room.getBookedDates().get(bookingName).add(0, startDate);
                         room.getBookedDates().get(bookingName).add(1, endDate);
 
+                        this.roomRepository.save(room);
                         return room;
 
                     }

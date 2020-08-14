@@ -91,8 +91,7 @@ public class BarController {
                 int seatsAtDefinedHour = bar.getAvailableSeatsPerDayAndHour()
                         .get(askedDate).get(bookingServiceModel.getStartDate().getHour());
 
-                bar.getAvailableSeatsPerDayAndHour().get(askedDate)
-                        .put(bookingServiceModel.getStartDate().getHour(), seatsAtDefinedHour - numberOfGuests);
+                this.barService.setNumberOfSeatsInMap(bookingServiceModel, askedDate, numberOfGuests, bar, seatsAtDefinedHour);
 
                 this.bookingService.saveBookingInDatabase(bookingServiceModel);
                 modelAndView.setViewName("redirect:/bookings/booking-summary");

@@ -142,4 +142,10 @@ public class FacilityServiceImpl implements FacilityService {
                 || facility.getAvailabilityPerDayAndHour().isEmpty();
     }
 
+    @Override
+    public void setNumberOfSeatsInMap(LocalDate askedDate, int hour, int numberOfGuests, Facility facility, int seatsAtDefinedHour) {
+        facility.getAvailabilityPerDayAndHour().get(askedDate)
+                .put(hour, seatsAtDefinedHour - numberOfGuests);
+    }
+
 }

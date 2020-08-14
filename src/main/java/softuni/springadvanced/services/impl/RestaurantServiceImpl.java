@@ -87,4 +87,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             }
         }
     }
+
+    @Override
+    public void setNumberOfAvailableRoomsInMap(LocalDate askedDate, Restaurant restaurant, int hour, int numberOfGuests, int seatsAtDefinedHour) {
+        restaurant.getAvailableSeatsPerDayAndHour().get(askedDate)
+                .put(hour, seatsAtDefinedHour - numberOfGuests);
+    }
 }

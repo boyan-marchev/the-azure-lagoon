@@ -95,8 +95,10 @@ public class SportActivityController {
                 int seatsAtDefinedHour = facility.getAvailabilityPerDayAndHour()
                         .get(askedDate).get(hour);
 
-                facility.getAvailabilityPerDayAndHour().get(askedDate)
-                        .put(hour, seatsAtDefinedHour - numberOfGuests);
+//                facility.getAvailabilityPerDayAndHour().get(askedDate)
+//                        .put(hour, seatsAtDefinedHour - numberOfGuests);
+
+                this.facilityService.setNumberOfSeatsInMap(askedDate, hour, numberOfGuests, facility, seatsAtDefinedHour);
 
                 this.bookingService.saveBookingInDatabase(bookingServiceModel);
                 modelAndView.setViewName("redirect:/bookings/booking-summary");

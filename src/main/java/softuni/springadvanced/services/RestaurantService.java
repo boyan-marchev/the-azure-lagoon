@@ -20,4 +20,6 @@ public interface RestaurantService {
     boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Restaurant restaurant);
 
     void putMapToRestaurantIfAbsent(LocalDate askedDate, Restaurant restaurant, int hour);
+
+    void setNumberOfAvailableRoomsInMap(LocalDate askedDate, Restaurant restaurant, int hour, int numberOfGuests, int seatsAtDefinedHour);
 }

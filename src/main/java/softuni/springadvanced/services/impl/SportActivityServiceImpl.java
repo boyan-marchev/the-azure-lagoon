@@ -4,21 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.springadvanced.models.entity.Facility;
 import softuni.springadvanced.models.entity.SportActivity;
+import softuni.springadvanced.models.entity.SportActivityArt;
 import softuni.springadvanced.repositories.SportActivityRepository;
+import softuni.springadvanced.services.FacilityService;
 import softuni.springadvanced.services.SportActivityService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class SportActivityServiceImpl implements SportActivityService {
 
     private final SportActivityRepository sportActivityRepository;
+    private final FacilityService facilityService;
 
     @Autowired
-    public SportActivityServiceImpl(SportActivityRepository sportActivityRepository) {
+    public SportActivityServiceImpl(SportActivityRepository sportActivityRepository, FacilityService facilityService) {
         this.sportActivityRepository = sportActivityRepository;
+        this.facilityService = facilityService;
     }
 
     @Override
@@ -28,11 +33,14 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public void createAndSaveDefault() {
-        createSportActivity("Volleyball");
-        createSportActivity("Football");
-        createSportActivity("Tennis");
-        createSportActivity("Fitness");
-        createSportActivity("Swimming");
+//        createSportActivity("Volleyball");
+//        createSportActivity("Football");
+//        createSportActivity("Tennis");
+//        createSportActivity("Fitness");
+//        createSportActivity("Swimming");
+
+        Arrays.stream(SportActivityArt.values())
+                .forEach(sportActivityArt -> this.createSportActivity(sportActivityArt.toString()));
 
     }
 
@@ -40,6 +48,7 @@ public class SportActivityServiceImpl implements SportActivityService {
 
         SportActivity sportActivity = new SportActivity();
         sportActivity.setSportArt(sportArt);
+        sportActivity.setFacility(this.facilityService.getFacilityByName("Multifunctional Sport Hall"));
 
         this.sportActivityRepository.save(sportActivity);
 

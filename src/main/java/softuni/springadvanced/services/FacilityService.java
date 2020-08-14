@@ -27,4 +27,6 @@ public interface FacilityService {
     void putMapToFacility(LocalDate askedDate, int hour, Facility facility);
 
     boolean getAvailableSeatsPerDateTime(LocalDate askedDate, int hour, Facility facility, int numberOfGuests);
+
+    void setNumberOfSeatsInMap(LocalDate askedDate, int hour, int numberOfGuests, Facility facility, int seatsAtDefinedHour);
 }

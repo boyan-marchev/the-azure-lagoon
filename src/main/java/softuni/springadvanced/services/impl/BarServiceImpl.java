@@ -77,6 +77,12 @@ public class BarServiceImpl implements BarService {
                 || bar.getAvailableSeatsPerDayAndHour().isEmpty();
     }
 
+    @Override
+    public void setNumberOfSeatsInMap(BookingServiceModel bookingServiceModel, LocalDate askedDate, int numberOfGuests, Bar bar, int seatsAtDefinedHour) {
+        bar.getAvailableSeatsPerDayAndHour().get(askedDate)
+                .put(bookingServiceModel.getStartDate().getHour(), seatsAtDefinedHour - numberOfGuests);
+    }
+
     private void createBar(String name, int capacity, int availableSeats) {
         Bar bar = new Bar();
         bar.setBarName(name);

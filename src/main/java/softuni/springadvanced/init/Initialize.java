@@ -14,7 +14,6 @@ import java.util.Map;
 @Component
 public class Initialize implements CommandLineRunner {
 
-    private final CategoryService categoryService;
     private final RoleService roleService;
     private final BarService barService;
     private final FacilityService facilityService;
@@ -23,8 +22,7 @@ public class Initialize implements CommandLineRunner {
     private final SportActivityService sportActivityService;
 
     @Autowired
-    public Initialize(CategoryService categoryService, RoleService roleService, BarService barService, FacilityService facilityService, HotelService hotelService, RestaurantService restaurantService, SportActivityService sportActivityService) {
-        this.categoryService = categoryService;
+    public Initialize(RoleService roleService, BarService barService, FacilityService facilityService, HotelService hotelService, RestaurantService restaurantService, SportActivityService sportActivityService) {
         this.roleService = roleService;
         this.barService = barService;
         this.facilityService = facilityService;
@@ -84,9 +82,6 @@ public class Initialize implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.categoryService.getAllCategories().size() == 0) {
-            this.categoryService.saveCategoriesInDatabase();
-        }
 
         if (this.roleService.getAllAuthorities().size() == 0) {
             this.roleService.saveRoleTypesInDatabase();
