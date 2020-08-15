@@ -21,15 +21,15 @@ public class UserRegisterBindingModel {
     private String lastName;
 
     @NotNull(message = "")
-    @Length(min = 3, max = 20, message = "Username must be more than 2 characters!")
+    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters!")
     private String username;
 
     @Email(message = "Enter valid email address!")
-    @NotNull(message = "Email cannot be empty!")
+    @NotNull(message = "Email should not be empty!")
     private String email;
 
     @NotNull(message = "")
-    @Length(min = 3, message = "Password must be more than 2 characters!")
+    @Length(min = 3, message = "Password must be between 3 and 20 characters!")
     private String password;
 
     @NotNull(message = "")

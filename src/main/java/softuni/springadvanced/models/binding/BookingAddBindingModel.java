@@ -19,7 +19,7 @@ public class BookingAddBindingModel {
     @NotNull(message = "This is a required field")
     private String userLastName;
 
-    @NotNull
+    @NotNull(message = "This is a required field")
     private String facilityName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -34,7 +34,7 @@ public class BookingAddBindingModel {
 //    @NotNull
     private LocalDateTime endDate;
 
-    @NotNull
+    @NotNull(message = "This is a required field")
     @Min(value = 1)
     private int numberOfGuests;
 

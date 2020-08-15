@@ -63,13 +63,15 @@ public class RestaurantController {
                                  BindingResult bindingResult, ModelAndView modelAndView, Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            this.bookingService.validateBooking(bookingAddBindingModel);
             modelAndView.setViewName("redirect:restaurants-info");
+            return modelAndView;
 
         } else if (bookingAddBindingModel.getStartDate().getHour() < 10 || bookingAddBindingModel.getStartDate().getHour() > 21) {
             modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
+            return modelAndView;
 
         } else {
-
             BookingServiceModel bookingServiceModel = this.bookingService.getBookingByPrincipalName(bookingAddBindingModel, principal.getName(), BookingType.RESTAURANT.toString());
 
             LocalDate askedDate = LocalDate.of(bookingServiceModel.getStartDate().getYear(),

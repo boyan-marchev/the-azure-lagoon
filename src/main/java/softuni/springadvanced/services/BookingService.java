@@ -22,4 +22,6 @@ public interface BookingService {
     BookingServiceModel getBookingByPrincipalName(BookingAddBindingModel bookingAddBindingModel, String username, String type);
 
     LocalDate getLocalDateByBookingServiceModel(BookingServiceModel bookingServiceModel);
+
+    void validateBooking(BookingAddBindingModel bookingAddBindingModel);
 }

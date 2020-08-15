@@ -11,10 +11,10 @@ import javax.validation.constraints.NotNull;
 public class UserLoginBindingModel {
 
     @NotNull(message = "")
-    @Length(min = 3, message = "Username must be more than 2 characters")
+    @Length(min = 3, message = "Username must be between 3 and 20 characters!")
     private String username;
 
     @NotNull(message = "")
-    @Length(min = 3, message = "Password must be more than 2 characters")
+    @Length(min = 3, message = "Password must be between 3 and 20 characters!")
     private String password;
 }

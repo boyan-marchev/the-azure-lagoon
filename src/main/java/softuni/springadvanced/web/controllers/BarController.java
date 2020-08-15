@@ -67,10 +67,13 @@ public class BarController {
                                  Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            this.bookingService.validateBooking(bookingAddBindingModel);
             modelAndView.setViewName("redirect:bars-info");
+            return modelAndView;
 
         } else if (bookingAddBindingModel.getStartDate().getHour() < 10 || bookingAddBindingModel.getStartDate().getHour() > 22) {
             modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
+            return modelAndView;
 
         } else {
 

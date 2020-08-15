@@ -3,30 +3,25 @@ package softuni.springadvanced.web.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.springadvanced.models.binding.FacilityAddBindingModel;
 import softuni.springadvanced.models.binding.UserLoginBindingModel;
 import softuni.springadvanced.models.binding.UserRegisterBindingModel;
-import softuni.springadvanced.models.entity.User;
 import softuni.springadvanced.models.service.FacilityServiceModel;
-import softuni.springadvanced.models.service.RoleServiceModel;
 import softuni.springadvanced.models.service.UserServiceModel;
 import softuni.springadvanced.models.view.UserChangeRoleViewModel;
+import softuni.springadvanced.models.view.UserDeleteViewModel;
 import softuni.springadvanced.services.FacilityService;
-import softuni.springadvanced.services.RoleService;
 import softuni.springadvanced.services.UserService;
 import softuni.springadvanced.web.annotations.PageTitle;
 
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +45,6 @@ public class UserController {
     @PageTitle("Login")
     public String login(@ModelAttribute("userLoginBindingModel")
                                 UserLoginBindingModel userLoginBindingModel) {
-
         return "login";
     }
 
@@ -79,11 +73,13 @@ public class UserController {
                                      ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
+            this.userService.validateUserRegisterBindingModel(userRegisterBindingModel);
             modelAndView.setViewName("redirect:register");
+            return modelAndView;
         }
 
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())){
-            modelAndView.setViewName("redirect:register");
+            throw new UsernameNotFoundException("Password should match the confirmed password.");
         }
 
         UserServiceModel userServiceModel =
@@ -162,6 +158,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("redirect:add-facility");
+            return modelAndView;
 
         } else {
 
@@ -175,29 +172,30 @@ public class UserController {
         return modelAndView;
     }
 
-    // TODO: 09-Aug-20 Implement and test methods
-//    @GetMapping("/delete-user/{id}")
-//    @PageTitle("Delete user")
-//    public ModelAndView deleteUser(ModelAndView modelAndView) {
-//
-//        List<UserDeleteViewModel> userDeleteViewModels =
-//                this.userService.getAllUsersAsServiceModels().stream()
-//                        .map(userServiceModel -> this.modelMapper.map(userServiceModel, UserDeleteViewModel.class))
-//                        .collect(Collectors.toList());
-//
-//        modelAndView.addObject("userDeleteViewModels", userDeleteViewModels);
-//
-//        modelAndView.setViewName("delete-user");
-//        return modelAndView;
-//
-//    }
-//
-//    @PostMapping("/delete-user/{id}")
-//    public ModelAndView deleteUserPost(@PathVariable("id") String id, ModelAndView modelAndView) {
-//        this.userService.deleteUserById(id);
-//        modelAndView.setViewName("redirect:admin");
-//
-//        return modelAndView;
-//    }
+    @GetMapping("/all-users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All users")
+    public ModelAndView allUsers(ModelAndView modelAndView) {
+
+        List<UserDeleteViewModel> userDeleteViewModels =
+                this.userService.getAllUsersAsServiceModels().stream()
+                        .map(userServiceModel -> this.modelMapper.map(userServiceModel, UserDeleteViewModel.class))
+                        .collect(Collectors.toList());
+
+        modelAndView.addObject("userDeleteViewModels", userDeleteViewModels);
+
+        modelAndView.setViewName("/all-users");
+        return modelAndView;
+
+    }
+
+    @GetMapping("/delete-user/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView deleteUserPost(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.userService.deleteUserById(id);
+        modelAndView.setViewName("/admin");
+
+        return modelAndView;
+    }
 
 }

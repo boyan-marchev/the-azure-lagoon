@@ -28,24 +28,17 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public void saveSportActivitiesInDatabase() {
-
+        // TODO: 14-Aug-20 admin functionality.
     }
 
     @Override
     public void createAndSaveDefault() {
-//        createSportActivity("Volleyball");
-//        createSportActivity("Football");
-//        createSportActivity("Tennis");
-//        createSportActivity("Fitness");
-//        createSportActivity("Swimming");
-
         Arrays.stream(SportActivityArt.values())
                 .forEach(sportActivityArt -> this.createSportActivity(sportActivityArt.toString()));
 
     }
 
     private void createSportActivity(String sportArt) {
-
         SportActivity sportActivity = new SportActivity();
         sportActivity.setSportArt(sportArt);
         sportActivity.setFacility(this.facilityService.getFacilityByName("Multifunctional Sport Hall"));

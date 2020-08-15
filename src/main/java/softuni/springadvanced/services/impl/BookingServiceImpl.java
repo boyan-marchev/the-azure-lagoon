@@ -2,6 +2,7 @@ package softuni.springadvanced.services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import softuni.springadvanced.models.binding.BookingAddBindingModel;
 import softuni.springadvanced.models.entity.Booking;
@@ -16,6 +17,7 @@ import softuni.springadvanced.services.UserService;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -83,5 +85,46 @@ public class BookingServiceImpl implements BookingService {
         int month = bookingServiceModel.getStartDate().getMonthValue();
         int day = bookingServiceModel.getStartDate().getDayOfMonth();
         return LocalDate.of(year, month, day);
+    }
+
+    @Override
+    public void validateBooking(BookingAddBindingModel bookingAddBindingModel) {
+        String userLastName = bookingAddBindingModel.getUserLastName();
+
+        if (userLastName == null || userLastName.isEmpty()){
+            throw new UsernameNotFoundException("This is a required field!");
+        }
+
+        String facilityName = bookingAddBindingModel.getFacilityName();
+
+        if (facilityName == null || facilityName.isEmpty()){
+            throw new UsernameNotFoundException("This is a required field!");
+        }
+
+        LocalDateTime startDate = bookingAddBindingModel.getStartDate();
+        LocalDateTime endDate = bookingAddBindingModel.getEndDate();
+
+        boolean isStartDateValid = true;
+        boolean isEndDateValid = true;
+        StringBuilder builder = new StringBuilder();
+
+        if (startDate.isBefore(LocalDateTime.now())){
+            builder.append("The start date cannot be in the past!").append(System.lineSeparator());
+            isStartDateValid = false;
+        }
+
+        if (endDate.isBefore(LocalDateTime.now())){
+            builder.append("The end date cannot be in the past!").append(System.lineSeparator());
+            isEndDateValid = false;
+        }
+
+        int numberOfGuests = bookingAddBindingModel.getNumberOfGuests();
+        if (numberOfGuests < 1){
+            throw new UsernameNotFoundException("The number should be greater than 0!");
+        }
+
+        if (!isStartDateValid || !isEndDateValid){
+            throw new UsernameNotFoundException(builder.toString());
+        }
     }
 }

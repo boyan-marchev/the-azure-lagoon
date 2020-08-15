@@ -3,6 +3,7 @@ package softuni.springadvanced.web.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,6 +69,7 @@ public class HotelController {
                                  BindingResult bindingResult, ModelAndView modelAndView, Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            this.bookingService.validateBooking(bookingAddBindingModel);
             modelAndView.setViewName("redirect:hotels-info");
             return modelAndView;
 
@@ -79,6 +81,7 @@ public class HotelController {
                     || bookingAddBindingModel.getStartDate().isAfter(bookingAddBindingModel.getEndDate())) {
 
                 modelAndView.setViewName("redirect:hotels-info");
+                throw new UsernameNotFoundException("Start date should be before end date!");
 
             } else {
 

@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import softuni.springadvanced.models.binding.UserLoginBindingModel;
+import softuni.springadvanced.models.binding.UserRegisterBindingModel;
 import softuni.springadvanced.models.entity.MemberStatus;
 import softuni.springadvanced.models.entity.Role;
 import softuni.springadvanced.models.entity.User;
@@ -48,30 +50,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public UserServiceModel getUserServiceModelByUsername(String username) {
-
-        User user = this.userRepository.findByUsername(username).orElse(null);
-
-        if (user != null) {
-
-            return this.modelMapper.map(user, UserServiceModel.class);
-
-        } else {
-            return null;
-
-        }
-    }
-
-    @Override
-    public UserServiceModel getUserServiceModelByLastname(String lastName) {
-
-        User user = this.userRepository.findByLastName(lastName)
-                .orElseThrow(() -> new UsernameNotFoundException("No such user found"));
-
-        return this.modelMapper.map(user, UserServiceModel.class);
-
-    }
 
     @Override
     public User getUserByLastname(String lastName) {
@@ -157,16 +135,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void deleteUserById(String id) {
-        User user = this.modelMapper.map(this.getUserServiceModelById(id), User.class);
-//        List<Booking> bookings = user.getBookings();
-//        for (Booking booking : bookings) {
-//            this.bookingService.deleteBooking(booking);
-//        }
-
-        this.userRepository.deleteById(id);
-    }
 
     @Override
     public List<UserChangeRoleViewModel> getAllUsersAsViewChangeRoleModels() {
@@ -201,18 +169,81 @@ public class UserServiceImpl implements UserService {
     public void checkMemberStatusOfUsers() {
         List<User> allUsers = this.getAllUsers();
         for (User user : allUsers) {
-            if (user.getClubMemberPoints() > 100 && user.getMemberStatus().equals(MemberStatus.ROOKIE.toString())){
+            if (user.getClubMemberPoints() > 100 && user.getMemberStatus().equals(MemberStatus.ROOKIE.toString())) {
                 user.setMemberStatus(MemberStatus.SILVER.toString());
 
-            } else if (user.getClubMemberPoints() > 250 && user.getMemberStatus().equals(MemberStatus.SILVER.toString())){
+            } else if (user.getClubMemberPoints() > 250 && user.getMemberStatus().equals(MemberStatus.SILVER.toString())) {
                 user.setMemberStatus(MemberStatus.GOLDEN.toString());
 
-            } else if (user.getClubMemberPoints() > 365 && user.getMemberStatus().equals(MemberStatus.GOLDEN.toString())){
+            } else if (user.getClubMemberPoints() > 365 && user.getMemberStatus().equals(MemberStatus.GOLDEN.toString())) {
                 user.setMemberStatus(MemberStatus.SENATOR.toString());
             }
         }
 
         this.userRepository.saveAll(allUsers);
+    }
+
+    @Override
+    public void deleteUserById(String id) {
+        if (this.userRepository.existsById(id)) {
+            this.userRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public User getUserById(String id) {
+        return this.userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void validateUserRegisterBindingModel(UserRegisterBindingModel userRegisterBindingModel) {
+        String firstName = userRegisterBindingModel.getFirstName();
+        String lastName = userRegisterBindingModel.getLastName();
+        String username = userRegisterBindingModel.getUsername();
+        String email = userRegisterBindingModel.getEmail();
+        String password = userRegisterBindingModel.getPassword();
+
+        boolean isFirstNameValid = true;
+        boolean isLastNameValid = true;
+        boolean isUsernameValid = true;
+        boolean isEmailValid = true;
+        boolean isPasswordValid = true;
+
+        StringBuilder builder = new StringBuilder();
+
+        if (firstName == null || firstName.isEmpty() || firstName.length() < 4 || firstName.length() > 20){
+            isFirstNameValid = false;
+            builder.append("First name must be between 3 and 20 characters!").append(System.lineSeparator());
+        }
+
+
+        if (lastName == null || lastName.isEmpty() || lastName.length() < 4 || lastName.length() > 20){
+            isLastNameValid = false;
+            builder.append("Last name must be between 3 and 20 characters!").append(System.lineSeparator());
+        }
+
+
+        if (username == null || username.isEmpty() || username.length() < 4 || username.length() > 20){
+            isUsernameValid = false;
+            builder.append("Username must be between 3 and 20 characters!").append(System.lineSeparator());
+        }
+
+
+        if (email == null || email.isEmpty()){
+            isEmailValid = false;
+            builder.append("Email should not be empty!").append(System.lineSeparator());
+        }
+
+        if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 20){
+            isPasswordValid = false;
+            builder.append("Password must be between 3 and 20 characters!").append(System.lineSeparator());
+        }
+
+
+        if (!isFirstNameValid || !isLastNameValid || !isUsernameValid || !isEmailValid || !isPasswordValid){
+            throw new UsernameNotFoundException(builder.toString());
+        }
+
     }
 
     @Override

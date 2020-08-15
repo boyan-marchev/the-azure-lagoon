@@ -2,6 +2,7 @@ package softuni.springadvanced.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,8 +69,9 @@ public class EventController {
                                  RedirectAttributes redirectAttributes, Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            this.bookingService.validateBooking(bookingAddBindingModel);
             modelAndView.setViewName("redirect:events-info");
-
+            return modelAndView;
         }
 
         if (bookingAddBindingModel.getEndDate() != null) {
@@ -78,6 +80,7 @@ public class EventController {
                     || bookingAddBindingModel.getStartDate().isAfter(bookingAddBindingModel.getEndDate())) {
 
                 modelAndView.setViewName("redirect:events-info");
+                throw new UsernameNotFoundException("Start date should be before end date!");
 
             } else {
 

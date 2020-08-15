@@ -72,10 +72,13 @@ public class SportActivityController {
                                  Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            this.bookingService.validateBooking(bookingAddBindingModel);
             modelAndView.setViewName("redirect:sport-info");
+            return modelAndView;
 
         } else if (bookingAddBindingModel.getStartDate().getHour() < 8 || bookingAddBindingModel.getStartDate().getHour() > 20) {
             modelAndView.setViewName("redirect:/bookings/booking-not-in-working-hours");
+            return modelAndView;
 
         } else {
 
@@ -94,9 +97,6 @@ public class SportActivityController {
             if (areAvailableSeatsAtHour) {
                 int seatsAtDefinedHour = facility.getAvailabilityPerDayAndHour()
                         .get(askedDate).get(hour);
-
-//                facility.getAvailabilityPerDayAndHour().get(askedDate)
-//                        .put(hour, seatsAtDefinedHour - numberOfGuests);
 
                 this.facilityService.setNumberOfSeatsInMap(askedDate, hour, numberOfGuests, facility, seatsAtDefinedHour);
 
